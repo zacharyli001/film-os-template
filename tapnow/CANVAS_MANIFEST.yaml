@@ -2,6 +2,7 @@ schema_version: film-os/v1
 project_id: DEMO
 canvases:
   - canvas_id: DEMO_S001_SH010_video_v01
+    display_name: 演示项目-05镜头-S001_SH010-人物推门-v01
     purpose: video_generation
     scene_id: S001
     shot_id: S001_SH010
@@ -13,4 +14,3 @@ canvases:
     created_by: example_user
     created_at: "2026-01-01T00:00:00Z"
     notes: Example only; replace before production.
-

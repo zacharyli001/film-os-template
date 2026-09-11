@@ -16,9 +16,59 @@ IDs are stable ASCII; labels may use any language. Use uppercase project/scene/s
 
 Never use `final`, `latest`, `new`, `same`, or `copy` as versions. A state change creates a new asset; an approved record is immutable.
 
-## Strict TapNow Canvas ID
+## TapNow dual-layer naming
 
-The TapNow canvas title and the Film OS `canvas_id` must be identical:
+TapNow is operated manually by a Chinese-speaking team, so the visible canvas title prioritizes human readability. Film OS keeps a separate stable `canvas_id` for machine tracking. They are mapped one-to-one in the Canvas Manifest.
+
+### Human-facing TapNow canvas title
+
+Use exactly five segments:
+
+`[项目简称]-[阶段号+类型]-[对象编号]-[中文内容]-v[NN]`
+
+Examples:
+
+- `夜航-01创意-全片-核心概念-v01`
+- `夜航-01视觉-全片-风格探索-v01`
+- `夜航-02人物-PC01-林渊基础造型-v01`
+- `夜航-02人物-PC01-林渊湿身状态-v01`
+- `夜航-02服装-WD01-林渊黑色制服-v01`
+- `夜航-03场景-LOC01-控制室夜景-v01`
+- `夜航-03道具-PR01-钢制圆筒完好-v01`
+- `夜航-04分镜-S001-控制室对峙-v01`
+- `夜航-05镜头-S001_SH010-林渊推门-v01`
+- `夜航-06返工-S001_SH010-镜头运动对比-v01`
+- `夜航-07交付-全片-审核通过镜头-v01`
+
+The five segments always mean: **哪个项目—哪个阶段—哪个对象—画布里是什么—第几个版本**.
+
+Human-title rules:
+
+- Use the ordinary half-width hyphen `-` between segments. Do not mix `_`, spaces, brackets, or multiple separators.
+- Keep the project short name at 2–6 Chinese characters and never change it after kickoff.
+- The stage/type must come from the fixed list below; never invent synonyms.
+- Use `全片` when the work is not tied to one numbered entity.
+- The Chinese-content segment should be 2–12 Chinese characters and describe what a person will find inside.
+- Do not include dates, operator names, status, `最终版`, `最新版`, `新的`, `复制`, or emotional comments.
+- Do not rename a canvas after production begins. If the scope or direction changes materially, archive it and create the next version.
+- New takes stay inside the same shot canvas and do not increment the canvas version.
+
+Fixed stage/type list:
+
+- `01创意`: idea, theme, world, story exploration
+- `01视觉`: overall look development and visual language
+- `02人物`: character identity and character states
+- `02服装`: reusable wardrobe assets
+- `03场景`: reusable location assets
+- `03道具`: reusable prop assets
+- `04分镜`: scene storyboards and coverage
+- `05镜头`: one formal production shot and its takes
+- `06返工`: controlled comparison or major rework
+- `07交付`: approved exports and delivery assembly
+
+### Internal Film OS Canvas ID
+
+Codex creates and maintains this automatically; TapNow operators do not need to memorize it:
 
 `[PROJECT]_[SCOPE]_[PURPOSE]_v[NN]`
 
@@ -29,8 +79,7 @@ Rules:
 - `PURPOSE`: exactly one lowercase purpose code listed below.
 - `vNN`: two digits beginning at `v01`; increment only when creating a replacement canvas or a separate creative branch.
 - Use ASCII letters, digits, and underscores only. No spaces, Chinese characters, punctuation, dates, operator names, or status words.
-- The title is an ID, not a description. Put readable Chinese descriptions, owners, and status in the Canvas Manifest or TapNow notes.
-- Do not rename a canvas after work has begun. If its scope or purpose was wrong, archive it and create the next version.
+- Put the internal Canvas ID on the first line of the TapNow canvas description/notes when that field is available.
 - Takes do not create a new canvas version. Keep shot takes inside the same shot canvas and name outputs with the Take ID.
 
 Approved `SCOPE` values:
