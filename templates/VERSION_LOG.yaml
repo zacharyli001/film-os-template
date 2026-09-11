@@ -1,0 +1,16 @@
+schema_version: film-os/v1
+project_id: DEMO
+entries:
+  - entry_id: VL-0001
+    timestamp: "2026-01-01T00:00:00Z"
+    actor: example_user
+    entity_type: project
+    entity_id: DEMO
+    from_version: null
+    to_version: v01
+    action: created
+    changed_variable: null
+    summary: Initialized Film OS project.
+    related_gate: null
+    approval: null
+

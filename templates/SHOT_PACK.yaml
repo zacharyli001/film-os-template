@@ -1,0 +1,28 @@
+schema_version: film-os/v1
+sealed_shot_pack:
+  shot_id: S001_SH010
+  shot_version: v01
+  generated_at: null
+  authorized_change_variable: null
+  scene_context: "Only current-shot facts."
+  active_references: []
+  location_map_slice: {}
+  first_frame: ""
+  blocking_and_eyelines: []
+  performance: ""
+  camera: {}
+  action_timing: []
+  physics: []
+  lighting: []
+  audio: []
+  continuity_in: []
+  continuity_out: []
+  positive_locks: []
+  exclusions_confirmed:
+    no_inactive_entities: false
+    no_obsolete_versions: false
+    no_prior_prompt_text: false
+    no_cross_shot_language: false
+    no_unbound_tags: false
+  source_versions: {}
+

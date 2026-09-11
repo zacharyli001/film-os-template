@@ -1,0 +1,31 @@
+schema_version: film-os/v1
+project_id: DEMO
+scene:
+  scene_id: S001
+  title: Example scene
+  script_version: v01
+  status: draft
+  slugline: INT. ROOM - NIGHT
+  scene_event: ""
+  value_start: ""
+  value_end: ""
+  turn: ""
+  information_revealed: []
+  character_conflict: ""
+  physical_situation: ""
+  continuity_in: []
+  continuity_out: []
+  cast_asset_ids: []
+  location_asset_id: null
+  prop_asset_ids: []
+  required_asset_states: []
+  acting_inputs:
+    character_master_profiles: []
+    unresolved_facts: []
+  shots: []
+  gate:
+    gate_id: G3_SHOT_LOCK
+    status: pending
+    approver: null
+    approved_at: null
+

@@ -1,0 +1,27 @@
+schema_version: film-os/v1
+project_id: DEMO
+assets:
+  - asset_id: "@char_PC_Aya_base_v01"
+    type: character_identity
+    label: Aya base identity
+    status: requested
+    version: v01
+    identity_root: "@char_PC_Aya_base_v01"
+    parent_asset_id: null
+    descriptor: "Exact reusable textual identity descriptor goes here."
+    required_views: [face_master, front, three_quarter, profile, back]
+    change: []
+    preserve: [identity, bone_structure, natural_skin_texture]
+    consumers: [S001]
+    source_files: []
+    tapnow_node_ids: []
+    qc:
+      criteria: [identity_consistent, views_complete, no_text_artifacts]
+      result: pending
+      reviewer: null
+      reviewed_at: null
+    lock:
+      gate: G2_ASSET_LOCK
+      approved_by: null
+      approved_at: null
+

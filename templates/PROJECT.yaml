@@ -1,0 +1,26 @@
+schema_version: film-os/v1
+project:
+  id: DEMO
+  title: Replace Me
+  logline: ""
+  format: short_film
+  aspect_ratio: "2.39:1"
+  target_runtime_seconds: 300
+  language: zh-CN
+  timezone: Asia/Shanghai
+  status: development
+  current_script_version: v01
+  owner: ""
+paths:
+  screenplay: script/screenplay_v01.md
+  asset_registry: registry/ASSET_REGISTRY.yaml
+  version_log: registry/VERSION_LOG.yaml
+  scenes: scenes
+  tapnow_manifest: tapnow/CANVAS_MANIFEST.yaml
+gates:
+  G1_SCRIPT_LOCK: {status: pending, approver: null, approved_at: null, note: null}
+  G2_ASSET_LOCK: {status: pending, approver: null, approved_at: null, note: null}
+  G3_SHOT_LOCK: {status: pending, approver: null, approved_at: null, note: null}
+  G4_PROMPT_RELEASE: {status: pending, approver: null, approved_at: null, note: null}
+  G5_TAKE_APPROVAL: {status: pending, approver: null, approved_at: null, note: null}
+

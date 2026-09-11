@@ -1,0 +1,57 @@
+schema_version: film-os/v1
+project_id: DEMO
+shot:
+  shot_id: S001_SH010
+  scene_id: S001
+  version: v01
+  status: draft
+  function: ""
+  duration_seconds: 6.0
+  active_asset_ids: []
+  active_cast: []
+  active_props: []
+  composition:
+    shot_size: medium
+    aspect_ratio: "2.39:1"
+    first_frame: ""
+  camera:
+    intent: observational
+    fov_degrees_diagonal: null
+    full_frame_equivalent_mm: null
+    position: ""
+    height: ""
+    tilt_degrees: null
+    movement: static
+  spatial:
+    location_map_ref: scenes/S001/SPATIAL.yaml
+    axis: ""
+    screen_direction: ""
+    eyelines: []
+    blocking: []
+  performance:
+    acting_profile_ref: null
+    shot_adaptation: ""
+  timeline: []
+  physics: []
+  lighting: []
+  audio: []
+  continuity_in: []
+  continuity_out: []
+  positive_locks: []
+  reference_jobs: []
+  iteration:
+    parent_version: null
+    change_variable: null
+    change_request: null
+    preserve: []
+  packaging:
+    pack_path: null
+    sealed_at: null
+    source_versions: {}
+  prompt_audit:
+    status: pending
+    checks: []
+    auditor: null
+    audited_at: null
+  takes: []
+

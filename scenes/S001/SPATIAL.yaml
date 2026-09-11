@@ -1,0 +1,16 @@
+schema_version: film-os/v1
+project_id: DEMO
+scene_id: S001
+coordinate_system: "origin at room center; +x screen geography east, +y north, +z up"
+fixed_landmarks:
+  door: {x: -4, y: 0, z: 0}
+  console: {x: 2, y: 1, z: 0}
+  chair: {x: 1.5, y: 0.5, z: 0}
+axis: "door-to-chair line; camera remains south side until deliberately crossed"
+positions:
+  Aya: {anchor: door, facing: chair}
+  Figure: {anchor: chair, facing: door}
+eyelines:
+  - Aya looks from doorway to Figure.
+  - Figure looks toward Aya without turning the chair.
+

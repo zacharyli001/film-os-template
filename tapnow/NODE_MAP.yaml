@@ -1,0 +1,23 @@
+schema_version: film-os/v1
+project_id: DEMO
+nodes:
+  - node_id: TN_DEMO_S001_SH010_REF_v01
+    canvas_id: DEMO_S001_SH010_video_v01
+    node_type: reference_input
+    input_entity_ids: ["@char_PC_Aya_base_v01"]
+    input_versions: {"@char_PC_Aya_base_v01": v01}
+    prompt_id: null
+    depends_on: []
+    output_targets: [TN_DEMO_S001_SH010_GEN_v01]
+    status: planned
+  - node_id: TN_DEMO_S001_SH010_GEN_v01
+    canvas_id: DEMO_S001_SH010_video_v01
+    node_type: video_generate
+    input_entity_ids: [S001_SH010]
+    input_versions: {S001_SH010: v01}
+    prompt_id: S001_SH010_video_v01
+    depends_on: [TN_DEMO_S001_SH010_REF_v01]
+    output_targets: [S001_SH010_TK001_v01]
+    status: planned
+    iteration: {parent_node_id: null, change_variable: null, preserve: []}
+

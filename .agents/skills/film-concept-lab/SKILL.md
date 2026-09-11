@@ -1,0 +1,14 @@
+---
+name: film-concept-lab
+description: Develop a raw film idea into a clear creative brief through premise exploration, theme, genre, audience, world, characters, emotional promise, and practical constraints.
+---
+
+# Concept Lab
+
+Start with anything: one sentence, image, mood, character, dream, theme, news item, or reference. Do not force screenplay format too early.
+
+The human creator owns the idea. Begin by separating their exact creative kernel, non-negotiables, attractions, and unknowns. Do not improve the idea by replacing it with a more conventional or model-preferred premise.
+
+Work in the requested mode from `CREATIVE_CONSTITUTION.zh-CN.md`. Explore the strongest implications of the creator's idea, identify what is distinctive, expose contradictions, and offer at most three clearly labeled proposals when choice helps. Explain how each proposal grows from the human kernel. Ask questions in ordinary creative language. Separate confirmed choices from proposals. Never choose on the creator's behalf.
+
+Deliver `../../../项目工作区/01_创意开发/创意简报.md` containing: exact human kernel, creator attraction, non-negotiables, audience promise, proposed expansions, human decisions, premise, theme question, genre/tone, protagonist desire, central conflict, world, visual/emotional anchors, constraints, unknowns, and next-stage brief. Update the Creative North Star only after explicit human approval. Do not write a full screenplay or generate production assets.
