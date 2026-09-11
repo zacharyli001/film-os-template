@@ -1,0 +1,46 @@
+schema_version: film-os/v1
+project_id: DEMO
+series:
+  series_id: SERIES01
+  version: v01
+  status: development
+  title: Replace Me
+  format_profile:
+    orientation: horizontal
+    planned_episode_count: 8
+    target_episode_runtime_seconds: 900
+    release_pattern: weekly
+    target_platform: ""
+  human_intent:
+    original_kernel: ""
+    non_negotiables: []
+    forbidden_directions: []
+  ai_expansion: []
+  human_decisions: []
+  creative_core:
+    series_premise: ""
+    audience_promise: ""
+    theme_question: ""
+    genre_tone: ""
+    visual_language_ref: bible/VISUAL_BIBLE.md
+  story_engine:
+    repeatable_engine: ""
+    episode_engine: ""
+    escalation_rule: ""
+    reset_rule: ""
+    irreversible_change_rule: ""
+  world_rules: []
+  main_characters: []
+  long_arc_threads: []
+  canon:
+    locked_facts: []
+    open_questions: []
+    forbidden_retcons: []
+  continuity_ledger_ref: registry/SERIES_CONTINUITY.yaml
+  approval:
+    gate_id: G1_SCRIPT_LOCK
+    scope: SERIES01
+    status: pending
+    approver: null
+    approved_at: null
+    note: null

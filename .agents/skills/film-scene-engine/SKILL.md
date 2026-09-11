@@ -7,3 +7,4 @@ description: Break a locked screenplay into scene cards with dramatic facts, con
 
 Read `../../../orchestration/scene-engine/SKILL.md` and follow it. Write scene records to `../../../scenes/` and human-readable summaries to `../../../项目工作区/03_剧本/`. Do not duplicate ACTING or storyboard work.
 
+In series mode, resolve every scene to one Episode Card and use IDs such as `SE01_E001_S001`. Carry in only the current episode's approved continuity facts and record concrete continuity-out changes for later closeout.

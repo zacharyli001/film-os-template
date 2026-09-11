@@ -16,6 +16,8 @@
 | 手动调用 | 部门 | 产出 |
 |---|---|---|
 | `$film-concept-lab` | 创意开发室 | 把一句想法发展成创意简报 |
+| `$film-series-architect` | 剧集架构室 | 连载剧集圣经、持续故事引擎、季弧线和分集表 |
+| `$film-series-continuity` | 连续性编辑室 | 跨集正史、人物知识/状态、关系、资产状态和伏笔回收 |
 | `$film-story-architect` | 故事架构室 | 世界、人物、故事梗概、结构、分场大纲 |
 | `$film-screenplay-writer` | 剧本室 | Treatment、场景、对白、剧本版本 |
 | `$film-script-doctor` | 剧本医生 | 诊断和优化已有剧本 |
@@ -56,3 +58,4 @@
 - 创作探索可以来回反复；一旦改变已确认内容，Codex 会提示受影响的下游成果。
 - 想手动控制就直接点名 Skill；不确定时才找 `$film-os-producer`。
 - LIRA、ACTING、CINEDANCE 保留上传原始规则，外围 Skills 不重写它们。
+- 连载项目先建立剧集圣经和季结构；之后每一集重复使用原有剧本、资产、分镜、表演、视频和审核部门。

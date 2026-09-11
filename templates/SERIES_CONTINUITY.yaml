@@ -1,0 +1,25 @@
+schema_version: film-os/v1
+project_id: DEMO
+series_id: SERIES01
+continuity:
+  version: v01
+  as_of_episode_id: null
+  canon_facts: []
+  timeline_events: []
+  character_states: []
+  character_knowledge: []
+  relationship_states: []
+  location_states: []
+  prop_states: []
+  wardrobe_states: []
+  story_threads:
+    - thread_id: TH001
+      description: ""
+      owner_character_id: null
+      planted_episode_id: null
+      intended_payoff_window: null
+      status: proposed
+      payoff_episode_id: null
+  contradictions: []
+  last_updated_by: ""
+  last_updated_at: null

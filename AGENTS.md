@@ -1,6 +1,6 @@
 # Film OS v1 — Codex Operating Contract
 
-This repository is the production control plane for a generative film project. Treat YAML records as the source of truth and generated prompts as disposable compiled artifacts.
+This repository is the production control plane for a generative film or episodic-series project. Treat YAML records as the source of truth and generated prompts as disposable compiled artifacts. Read `project.production_type` from `PROJECT.yaml`: use `film` for a standalone work and `series` for episodic production. Never force a series through a feature-film structure.
 
 ## Highest law: human creative authorship
 
@@ -44,15 +44,21 @@ This repository is a shared film studio, not a mandatory linear automation. The 
 
 Every department chat must begin by reading `项目工作区/00_项目总览.md` and the minimum relevant approved artifacts. Every department must write durable decisions/deliverables into the shared workspace before declaring work complete. Chat memory is not a source of truth. A user may revisit an earlier stage at any time; create a new version and show downstream impact instead of blocking creative exploration.
 
+For `series` projects, also read the current Series Bible, Season Map, Episode Card, and Series Continuity Ledger when they exist. Use the hierarchy `series → season → episode → scene → shot`. Separate permanent canon, season-level plans, episode facts, and shot execution. A later episode may not silently rewrite an earlier approved fact. Proposed retcons must show the affected episodes, assets, and released shots before a human decides.
+
 Also read `项目工作区/00_创意北极星.md` and `项目工作区/00_创意决策记录.md` for creative tasks. If a department proposal conflicts with the Creative North Star, flag the conflict and offer a compliant alternative; do not silently reinterpret the North Star.
 
 Team collaboration follows `TEAM_COLLABORATION.zh-CN.md`. Each work item has one owner, one current version, a review audience, and one decision authority. Comments are not approvals. A department lead may approve craft execution inside already approved intent, but only the creator/director may change premise, theme, protagonist, ending, core character arc, or show-level visual language unless authority is explicitly delegated in the project overview.
 
 For cross-computer work, follow `CROSS_COMPUTER_SETUP.zh-CN.md`. Before editing, sync the shared repository and claim one task in `项目工作区/00_任务看板.md`. Never let two people edit the same authoritative file concurrently. TapNow is the default production media system: team canvases hold generation work, the Team Library holds approved reusable media, and Elements hold reusable reference sets. Keep IDs, prompts, decisions, approvals, and lightweight records in this repository. At asset lock, take approval, and delivery, export milestone masters from TapNow to a designated local backup drive. Never record one teammate's absolute local path as the only shared asset location.
 
-The default lifecycle is:
+The default film lifecycle is:
 
 `idea → concept → story architecture → screenplay → scene facts → assets → storyboard/spatial/acting → isolated video prompt → TapNow → edit/sound/delivery`.
+
+The default series lifecycle is:
+
+`idea → series concept → series bible → season map → episode card → episode screenplay → scene facts → assets/state deltas → storyboard/spatial/acting → isolated video prompt → TapNow → episode edit → continuity update → next episode`.
 
 This lifecycle guides dependency checks but does not force the user to run every skill or use one chat. Experimental work is allowed before lock when clearly labeled `探索版`; it must not overwrite approved production records.
 
@@ -61,6 +67,8 @@ This lifecycle guides dependency checks but does not force the user to run every
 1. `开始新项目` — inspect `01_放资料`, initialize all records, and return only missing creative information.
 2. `处理第X场` — advance that scene to the next human review point, automatically invoking the required orchestration/core engines.
 3. `反馈：...` — classify the issue, select one primary variable, preserve passed qualities, create the next version, and advance to the next review point.
+
+In series mode, also accept `开发第X集`, `处理第X集第Y场`, `检查第X集连续性`, and `第X集成片通过`. Resolve colloquial episode numbers to stable season/episode IDs and maintain the records automatically.
 
 At every stop, end with exactly one clear next action: `请确认`, `请选一个版本`, `请补充`, or `可以去 TapNow 生成`.
 
@@ -85,6 +93,8 @@ When records conflict, stop promotion, mark `blocked`, and report the exact fiel
 ## Required routing
 
 - Script structure or story revision → `orchestration/script-doctor`
+- Series premise, repeatable story engine, season arc, episode map → `$film-series-architect`
+- Cross-episode canon, character knowledge/state, setup/payoff, retcon impact → `$film-series-continuity`
 - Scene facts and continuity → `orchestration/scene-engine`
 - Asset inventory/state requests → `orchestration/asset-architect`, then LIRA
 - Coverage/editing intent → `orchestration/storyboard-director`
@@ -97,17 +107,21 @@ When records conflict, stop promotion, mark `blocked`, and report the exact fiel
 
 ## Five human gates
 
-1. `G1_SCRIPT_LOCK` — story, scene boundaries, canon.
-2. `G2_ASSET_LOCK` — identity roots, state variants, locations, hero props.
-3. `G3_SHOT_LOCK` — shot function, coverage, spatial map, first-frame intent.
-4. `G4_PROMPT_RELEASE` — sealed pack passes Prompt Audit.
-5. `G5_TAKE_APPROVAL` — final take accepted for edit/delivery.
+1. `G1_SCRIPT_LOCK` — story, scene boundaries, canon. In series mode it is scoped to the series/season foundation or one episode script.
+2. `G2_ASSET_LOCK` — identity roots, state variants, locations, hero props. Series-level reusable bases and episode-level state deltas are recorded separately.
+3. `G3_SHOT_LOCK` — shot function, coverage, spatial map, first-frame intent for the current episode.
+4. `G4_PROMPT_RELEASE` — the current shot's sealed pack passes Prompt Audit.
+5. `G5_TAKE_APPROVAL` — final take accepted for the current episode edit/delivery.
 
-No downstream state may advance without the preceding gate recorded as `approved`.
+The five gate types do not multiply in series mode; they repeat with an explicit scope such as `SE01`, `SE01_E001`, or `SE01_E001_S001_SH010`. No downstream state may advance without the preceding scoped gate recorded as `approved`.
 
 ## State machines
 
 Project: `development → script_locked → assets_locked → shots_locked → generating → post → delivered`.
+
+Series: `development → bible_locked → season_planned → in_production → season_post → season_delivered`.
+
+Episode: `idea → outlined → script_locked → assets_ready → shots_locked → generating → post → approved → continuity_closed`.
 
 Asset: `requested → specified → prompt_ready → generated → qc → locked`; failure routes to `revision`, then back to `prompt_ready`. Locked assets require a new version, never in-place mutation.
 
@@ -124,6 +138,8 @@ Each retake changes exactly one primary variable: `identity`, `wardrobe_state`, 
 The packager may read the full repository but emits only the current shot's active facts. Include: current shot ID/version, approved active references and exact descriptors, relevant location-map slice, first frame, blocking/eyelines, performance adaptation, camera/timing/physics/light/audio requirements, continuity-in/out, locks, and the single authorized change for a retake.
 
 Exclude: inactive characters/props, obsolete asset versions, prior prompts, rejected takes, other scenes, production chat, notes not expressed as current constraints, `same as before`, `continues`, `previous scene`, or unbound tags. The resulting file is a sealed current-shot document.
+
+For a series shot, include only the continuity facts that are active at the current episode and scene. Earlier episodes are evidence sources, not prompt context. Convert any needed carry-over into explicit current desired state; never place recaps, whole-season notes, future spoilers, or unrelated episode facts inside the Shot Pack.
 
 ## Prompt Audit
 

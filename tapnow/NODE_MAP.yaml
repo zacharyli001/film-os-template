@@ -1,5 +1,8 @@
 schema_version: film-os/v1
 project_id: DEMO
+series_id: null
+season_id: null
+episode_id: null
 nodes:
   - node_id: TN_DEMO_S001_SH010_REF_v01
     canvas_id: DEMO_S001_SH010_video_v01
@@ -20,4 +23,3 @@ nodes:
     output_targets: [S001_SH010_TK001_v01]
     status: planned
     iteration: {parent_node_id: null, change_variable: null, preserve: []}
-

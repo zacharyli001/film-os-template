@@ -1,5 +1,8 @@
 schema_version: film-os/v1
 project_id: DEMO
+series_id: null
+season_id: null
+episode_id: null
 shot:
   shot_id: S001_SH010
   scene_id: S001
@@ -54,4 +57,3 @@ shot:
     auditor: null
     audited_at: null
   takes: []
-

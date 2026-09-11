@@ -6,6 +6,8 @@ entries:
     actor: example_user
     entity_type: project
     entity_id: DEMO
+    season_id: null
+    episode_id: null
     from_version: null
     to_version: v01
     action: created
@@ -13,4 +15,3 @@ entries:
     summary: Initialized Film OS project.
     related_gate: null
     approval: null
-

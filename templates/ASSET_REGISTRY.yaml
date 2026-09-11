@@ -1,5 +1,6 @@
 schema_version: film-os/v1
 project_id: DEMO
+series_id: null
 assets:
   - asset_id: "@char_PC_Aya_base_v01"
     type: character_identity
@@ -12,6 +13,10 @@ assets:
     required_views: [face_master, front, three_quarter, profile, back]
     change: []
     preserve: [identity, bone_structure, natural_skin_texture]
+    scope: project
+    introduced_episode_id: null
+    valid_from_episode_id: null
+    valid_until_episode_id: null
     consumers: [S001]
     source_files: []
     tapnow_node_ids: []
@@ -24,4 +29,3 @@ assets:
       gate: G2_ASSET_LOCK
       approved_by: null
       approved_at: null
-

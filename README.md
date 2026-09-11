@@ -1,6 +1,6 @@
 # AIGC FILM OS v1
 
-Film OS is a Codex-operated production repository that turns a screenplay into controlled TapNow asset and video work. It separates three specialist engines—LIRA (images), ACTING (performance), and CINEDANCE (video prompt compilation)—from seven orchestration skills and a shared YAML protocol.
+Film OS is a Codex-operated production repository for standalone films and episodic series. It turns human-approved creative intent into controlled TapNow asset and video work while preserving three specialist engines—LIRA (images), ACTING (performance), and CINEDANCE (video prompt compilation).
 
 ## 团队请从这里开始
 
@@ -23,6 +23,7 @@ $film-os-producer 检查项目，告诉我现在适合进入哪个部门
 - 跨电脑协作设置：[`CROSS_COMPUTER_SETUP.zh-CN.md`](CROSS_COMPUTER_SETUP.zh-CN.md)
 - 三人独立 Codex 设置：[`THREE_PERSON_CODEX_SETUP.zh-CN.md`](THREE_PERSON_CODEX_SETUP.zh-CN.md)
 - 极简入门：[`START_HERE.md`](START_HERE.md)
+- 连载剧集模式：[`SERIES_MODE.zh-CN.md`](SERIES_MODE.zh-CN.md)
 - 详细手册（管理员需要时再看）：[`USER_GUIDE.zh-CN.md`](USER_GUIDE.zh-CN.md)
 
 下面内容是系统维护说明，普通团队成员可以不看。
@@ -46,6 +47,7 @@ core/                 immutable source skills + thin Codex wrappers
 orchestration/        workflow skills
 bible/                canon, visual, character, location, sound standards
 registry/             project-wide source-of-truth YAML
+series/               series bible, season maps, episode cards
 scenes/Sxxx/          scene card, spatial map, shot cards
 prompts/shot-packs/   sealed current-shot inputs/compiled prompts
 tapnow/               Canvas Manifest and Node Map

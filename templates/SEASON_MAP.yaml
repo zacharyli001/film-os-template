@@ -1,0 +1,35 @@
+schema_version: film-os/v1
+project_id: DEMO
+series_id: SERIES01
+season:
+  season_id: SE01
+  version: v01
+  status: development
+  planned_episode_count: 8
+  season_question: ""
+  opening_state: ""
+  closing_state: ""
+  irreversible_change: ""
+  midpoint_shift: ""
+  climax: ""
+  character_arcs: []
+  story_threads: []
+  episodes:
+    - episode_id: SE01_E001
+      order: 1
+      title: ""
+      logline: ""
+      episode_promise: ""
+      central_turn: ""
+      ending_hook: ""
+      threads_planted: []
+      threads_advanced: []
+      threads_paid_off: []
+      status: idea
+  approval:
+    gate_id: G1_SCRIPT_LOCK
+    scope: SE01
+    status: pending
+    approver: null
+    approved_at: null
+    note: null

@@ -5,6 +5,12 @@ IDs are stable ASCII; labels may use any language. Use uppercase project/scene/s
 - Scene: `S001`, `S024`
 - Shot: `S001_SH010`; number by tens to allow inserts.
 - Take: `S001_SH010_TK001_v01`
+- Series: `SERIES01`
+- Season: `SE01`
+- Episode: `SE01_E001`
+- Series scene: `SE01_E001_S001`
+- Series shot: `SE01_E001_S001_SH010`
+- Series take: `SE01_E001_S001_SH010_TK001_v01`
 - Character identity: `@char_PC_Aya_base_v01`
 - Character state: `@char_PC_Aya_wet_v01`
 - Location: `@loc_ControlRoom_night_v01`
@@ -37,6 +43,8 @@ Examples:
 - `夜航-03道具-PR01-钢制圆筒完好-v01`
 - `夜航-04分镜-S001-控制室对峙-v01`
 - `夜航-05镜头-S001_SH010-林渊推门-v01`
+- `夜航-04分镜-SE01_E001-首集分镜-v01`
+- `夜航-05镜头-SE01_E001_S001_SH010-林渊推门-v01`
 - `夜航-06返工-S001_SH010-镜头运动对比-v01`
 - `夜航-07交付-全片-审核通过镜头-v01`
 
@@ -85,8 +93,12 @@ Rules:
 Approved `SCOPE` values:
 
 - Whole project: `GLOBAL`
+- Season: `SE01`
+- Episode: `SE01_E001`
 - Scene: `S001`
 - Shot: `S001_SH010`
+- Series scene: `SE01_E001_S001`
+- Series shot: `SE01_E001_S001_SH010`
 - Character: `char_PC_Aya`
 - Character state: `char_PC_Aya_wet`
 - Location: `loc_ControlRoom_night`
@@ -115,6 +127,8 @@ Canonical examples:
 - `NF01_S001_assets_v01`
 - `NF01_S001_storyboard_v01`
 - `NF01_S001_SH010_video_v01`
+- `NF01_SE01_E001_storyboard_v01`
+- `NF01_SE01_E001_S001_SH010_video_v01`
 - `NF01_S001_SH010_compare_v01`
 - `NF01_GLOBAL_delivery_v01`
 

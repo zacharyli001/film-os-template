@@ -1,0 +1,41 @@
+schema_version: film-os/v1
+project_id: DEMO
+series_id: SERIES01
+season_id: SE01
+episode:
+  episode_id: SE01_E001
+  episode_number: 1
+  version: v01
+  status: idea
+  title: ""
+  target_runtime_seconds: 900
+  logline: ""
+  episode_promise: ""
+  opening_hook: ""
+  dramatic_question: ""
+  a_story: ""
+  b_story: ""
+  c_story: null
+  midpoint_turn: ""
+  climax: ""
+  ending_hook: ""
+  emotional_change: ""
+  continuity_in: []
+  continuity_out: []
+  character_state_changes: []
+  character_knowledge_changes: []
+  relationship_changes: []
+  world_state_changes: []
+  threads_planted: []
+  threads_advanced: []
+  threads_paid_off: []
+  required_assets_reused: []
+  required_asset_state_deltas: []
+  screenplay_path: null
+  scene_ids: []
+  gates:
+    G1_SCRIPT_LOCK: {scope: SE01_E001, status: pending, approver: null, approved_at: null, note: null}
+    G2_ASSET_LOCK: {scope: SE01_E001, status: pending, approver: null, approved_at: null, note: null}
+    G3_SHOT_LOCK: {scope: SE01_E001, status: pending, approver: null, approved_at: null, note: null}
+    G4_PROMPT_RELEASE: {scope: SE01_E001, status: pending, approver: null, approved_at: null, note: null}
+    G5_TAKE_APPROVAL: {scope: SE01_E001, status: pending, approver: null, approved_at: null, note: null}

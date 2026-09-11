@@ -9,6 +9,11 @@ REQUIRED = [
     "AGENTS.md", "README.md", "templates/PROJECT.yaml",
     "templates/ASSET_REGISTRY.yaml", "templates/SCENE_CARD.yaml",
     "templates/SHOT_CARD.yaml", "templates/VERSION_LOG.yaml",
+    "templates/SERIES_BIBLE.yaml", "templates/SEASON_MAP.yaml",
+    "templates/EPISODE_CARD.yaml", "templates/SERIES_CONTINUITY.yaml",
+    "SERIES_MODE.zh-CN.md", "series/README.md",
+    ".agents/skills/film-series-architect/SKILL.md",
+    ".agents/skills/film-series-continuity/SKILL.md",
     "tapnow/CANVAS_MANIFEST_SPEC.md", "tapnow/NODE_MAP_SPEC.md",
 ]
 

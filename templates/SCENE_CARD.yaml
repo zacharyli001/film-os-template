@@ -1,5 +1,8 @@
 schema_version: film-os/v1
 project_id: DEMO
+series_id: null
+season_id: null
+episode_id: null
 scene:
   scene_id: S001
   title: Example scene
@@ -28,4 +31,3 @@ scene:
     status: pending
     approver: null
     approved_at: null
-

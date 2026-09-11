@@ -2,6 +2,8 @@
 
 这份手册面向导演、编剧、资产负责人、Prompt 工程师、TapNow 操作员和制片监督。团队不需要理解代码，但必须遵守审批、命名、版本和单变量返工规则。
 
+连载剧集请先阅读 `SERIES_MODE.zh-CN.md`。剧集模式在本系统上增加 Series Bible、Season Map、Episode Card 和连续性台账；每一集仍然复用同一套剧本、资产、分镜、表演、视频、TapNow和五个 Gate。
+
 > 这是管理员进阶手册。普通团队成员只需阅读 `START_HERE.md` 和 `TEAM_QUICK_CARD.md`，不需要阅读本文件，也不需要接触 YAML。
 
 ---
@@ -141,6 +143,10 @@ bible/SOUND_BIBLE.md
 | 文件 | 作用 | 不负责 |
 |---|---|---|
 | `PROJECT.yaml` | 项目级设置、路径、五个 Gate | 具体镜头细节 |
+| `SERIES_BIBLE.yaml` | 剧集承诺、持续故事引擎、世界正史、长期人物弧线 | 单集完整剧本 |
+| `SEASON_MAP.yaml` | 季弧线、分集功能、伏笔与回收窗口 | 镜头执行 |
+| `EPISODE_CARD.yaml` | 单集承诺、钩子、故事线、状态变化和五个分集 Gate | 全剧永久正史 |
+| `SERIES_CONTINUITY.yaml` | 已批准成片形成的跨集正史、人物知识与资产状态 | 未批准计划 |
 | `ASSET_REGISTRY.yaml` | 资产身份、状态、版本、描述、审批 | 镜头调度 |
 | `SCENE_CARD.yaml` | 场次事实、转折、连续性、所需资产 | 表演解释和摄影设计 |
 | `SHOT_CARD.yaml` | 镜头功能、构图、空间、时间、锁定项 | 全项目上下文 |
