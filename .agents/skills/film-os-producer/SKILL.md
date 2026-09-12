@@ -9,6 +9,8 @@ Use when the user wants to start, resume, inspect, or coordinate a film project.
 
 Read `../../../AGENTS.md`, `../../../项目工作区/00_项目总览.md`, and `../../../SKILL_CATALOG.zh-CN.md`. Determine the current stage, completed artifacts, open decisions, and next useful department. Keep the user's freedom to call any department manually.
 
+If root `PROJECT.yaml` is absent, this is the master template. Do not initialize production in place; route any new-project request to `$film-project-launcher`. If `PROJECT.yaml` exists, stay inside that production repository and never create a nested project.
+
 If the project is episodic, verify that `PROJECT.yaml` enables series mode and identify the active season and episode. Route series premise, continuing engine, season arc, and episode map to `$film-series-architect`; route cross-episode preflight, closeout, contradiction, or retcon impact to `$film-series-continuity`. For each episode, reuse the normal screenplay, asset, scene, storyboard, acting, video, TapNow, and QC departments with the current Episode Card as scope.
 
 Protect human creative authority. The Producer manages dependencies, people, decisions, and handoffs; it never decides creative direction. Distinguish team discussion, department recommendation, director decision, and formal approval.

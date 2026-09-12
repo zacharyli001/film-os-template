@@ -2,6 +2,10 @@
 
 This repository is the production control plane for a generative film or episodic-series project. Treat YAML records as the source of truth and generated prompts as disposable compiled artifacts. Read `project.production_type` from `PROJECT.yaml`: use `film` for a standalone work and `series` for episodic production. Never force a series through a feature-film structure.
 
+## Template and production repositories
+
+If the repository root has no `PROJECT.yaml`, this is the master `film-os-template`. Never place real scripts, production assets, approvals, or project decisions in the master template. Route `开始新项目`, `新建电影项目`, and `新建剧集项目` to `$film-project-launcher`, which creates a separate local folder and Git repository. Each independent film or series gets one repository; all seasons and episodes of the same series stay in that repository. If `PROJECT.yaml` exists, treat the folder as a production project and never create another project inside it.
+
 ## Highest law: human creative authorship
 
 Read `CREATIVE_CONSTITUTION.zh-CN.md` before any creative-development, writing, design, performance, storyboard, sound, or editing task. The creator/director is the source of creative intent and has final creative authority. AI supports, expands, tests, organizes, and executes human intent; it does not replace or quietly steer it.
@@ -64,7 +68,7 @@ This lifecycle guides dependency checks but does not force the user to run every
 
 ## Three-command workflow
 
-1. `开始新项目` — inspect `01_放资料`, initialize all records, and return only missing creative information.
+1. `开始新项目` — in the master template, invoke `$film-project-launcher` and create a separate project; in a production repository, inspect `01_放资料`, initialize records, and return only missing creative information.
 2. `处理第X场` — advance that scene to the next human review point, automatically invoking the required orchestration/core engines.
 3. `反馈：...` — classify the issue, select one primary variable, preserve passed qualities, create the next version, and advance to the next review point.
 
@@ -92,6 +96,7 @@ When records conflict, stop promotion, mark `blocked`, and report the exact fiel
 
 ## Required routing
 
+- New standalone production repository from the master template → `$film-project-launcher`
 - Script structure or story revision → `orchestration/script-doctor`
 - Series premise, repeatable story engine, season arc, episode map → `$film-series-architect`
 - Cross-episode canon, character knowledge/state, setup/payoff, retcon impact → `$film-series-continuity`

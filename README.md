@@ -23,12 +23,13 @@ $film-os-producer 检查项目，告诉我现在适合进入哪个部门
 - 跨电脑协作设置：[`CROSS_COMPUTER_SETUP.zh-CN.md`](CROSS_COMPUTER_SETUP.zh-CN.md)
 - 三人独立 Codex 设置：[`THREE_PERSON_CODEX_SETUP.zh-CN.md`](THREE_PERSON_CODEX_SETUP.zh-CN.md)
 - 极简入门：[`START_HERE.md`](START_HERE.md)
+- 自动新建项目：[`NEW_PROJECT_WORKFLOW.zh-CN.md`](NEW_PROJECT_WORKFLOW.zh-CN.md)
 - 连载剧集模式：[`SERIES_MODE.zh-CN.md`](SERIES_MODE.zh-CN.md)
 - 详细手册（管理员需要时再看）：[`USER_GUIDE.zh-CN.md`](USER_GUIDE.zh-CN.md)
 
 下面内容是系统维护说明，普通团队成员可以不看。
 
-## Start here
+## Administrator/manual fallback
 
 1. Copy `templates/PROJECT.yaml`, `ASSET_REGISTRY.yaml`, and `VERSION_LOG.yaml` to the repository root/`registry/` as shown below.
 2. Put the screenplay in `script/` and complete project/bible facts.
@@ -60,7 +61,7 @@ tools/                 local validation
 
 Open this folder as the project. Codex automatically reads `AGENTS.md`. Each local skill is discoverable by path; tell Codex which production stage to run, or name the relevant skill. The core wrappers require reading their preserved original reference in full.
 
-To start a real production, copy the template files, replace `DEMO`/example IDs, and keep the templates unchanged for future projects. Run `python3 tools/validate_repo.py` after structural changes.
+The steps above describe the underlying protocol for maintenance and recovery. For normal team use, do not copy or edit files manually. From this master template say `$film-project-launcher 新建电影项目：项目名` or `$film-project-launcher 新建剧集项目：项目名`. Codex creates a clean separate production repository. Run `python3 tools/validate_repo.py` only after structural maintenance.
 
 ## Team roles
 
