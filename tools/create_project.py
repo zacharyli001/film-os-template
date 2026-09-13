@@ -13,6 +13,8 @@ import shutil
 import subprocess
 import sys
 
+from upgrade_project import initialize_installation
+
 
 TEMPLATE_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PARENT = TEMPLATE_ROOT.parent / "Film Projects"
@@ -56,7 +58,7 @@ def replace_once(text: str, old: str, new: str, label: str) -> str:
 
 
 def copy_template(target: Path) -> None:
-    ignored = shutil.ignore_patterns(".git", ".DS_Store", "__pycache__", "*.pyc", "work")
+    ignored = shutil.ignore_patterns(".git", ".DS_Store", "__pycache__", "*.pyc", "~$*", "work")
     shutil.copytree(TEMPLATE_ROOT, target, ignore=ignored)
 
 
@@ -329,6 +331,7 @@ def main() -> int:
             if series_ledger.exists():
                 series_ledger.unlink()
         update_overview(target, title, args.production_type)
+        initialize_installation(target)
         git_ok, git_note = (False, "Git initialization skipped") if args.no_git else initialize_git(target)
         result = {
             "status": "created",

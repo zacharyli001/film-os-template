@@ -16,6 +16,14 @@ $film-project-launcher 新建电影项目：你的项目名称
 
 Codex会在新的文件夹和 Git 仓库里工作，不会污染母版。需要团队同步时，在同一句话加上“建立私有 GitHub 仓库并同步”。
 
+如果你要给 Film OS 本身增加新功能，请回到 `film-os-template` 母版聊天。不要直接在作品项目里改通用系统。功能发布后，在母版中说：
+
+```text
+$film-os-upgrader 检查我的作品项目能否安全升级。先不要执行。
+```
+
+完整说明见 `UPGRADE_GUIDE.zh-CN.md`。
+
 如果你做的是连载剧集，第一句话直接说：
 
 ```text

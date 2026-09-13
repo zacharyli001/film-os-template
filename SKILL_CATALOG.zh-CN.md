@@ -9,6 +9,7 @@
 | 手动调用 | 部门 | 适合什么时候 |
 |---|---|---|
 | `$film-project-launcher` | 项目启动器 | 从母版自动建立独立电影/剧集文件夹、Git 仓库和项目记录 |
+| `$film-os-upgrader` | 系统升级员 | 从母版检查并安全升级作品项目，不覆盖创作与生产资料 |
 | `$film-os-producer` | 制片总控 | 不知道下一步、检查全项目、准备跨部门交接 |
 | `$film-production-supervisor` | 生产监督 | 版本、审核、Prompt Audit、Take QC、返工 |
 

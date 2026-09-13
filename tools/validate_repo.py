@@ -6,14 +6,19 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = [
-    "AGENTS.md", "README.md", "templates/PROJECT.yaml",
+    "AGENTS.md", "README.md", "FILM_OS_VERSION.yaml",
+    "UPGRADE_GUIDE.zh-CN.md", "CHANGELOG.zh-CN.md",
+    "upgrade/POLICY.json", "upgrade/KNOWN_BASELINES.json",
+    "templates/PROJECT.yaml",
     "templates/ASSET_REGISTRY.yaml", "templates/SCENE_CARD.yaml",
     "templates/SHOT_CARD.yaml", "templates/VERSION_LOG.yaml",
     "templates/SERIES_BIBLE.yaml", "templates/SEASON_MAP.yaml",
     "templates/EPISODE_CARD.yaml", "templates/SERIES_CONTINUITY.yaml",
     "SERIES_MODE.zh-CN.md", "series/README.md",
     "NEW_PROJECT_WORKFLOW.zh-CN.md", "tools/create_project.py",
+    "tools/upgrade_project.py",
     ".agents/skills/film-project-launcher/SKILL.md",
+    ".agents/skills/film-os-upgrader/SKILL.md",
     ".agents/skills/film-series-architect/SKILL.md",
     ".agents/skills/film-series-continuity/SKILL.md",
     "tapnow/CANVAS_MANIFEST_SPEC.md", "tapnow/NODE_MAP_SPEC.md",
@@ -51,7 +56,7 @@ if yaml:
             errors.append(f"YAML parse error {path.relative_to(ROOT)}: {exc}")
 else:
     for path in yaml_files:
-        if not re.search(r"^schema_version:\s*film-os/v1\s*$", path.read_text(encoding="utf-8"), re.M):
+        if not re.search(r"^schema_version:\s*film-os/[^\s]+\s*$", path.read_text(encoding="utf-8"), re.M):
             errors.append(f"missing schema_version: {path.relative_to(ROOT)}")
 
 if errors:

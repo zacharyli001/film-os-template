@@ -1,0 +1,11 @@
+{
+  "baselines": [
+    {
+      "id": "film-os-v1-before-safe-upgrades",
+      "version": "1.0.0",
+      "git_ref": "d99c745",
+      "note": "用于识别在安全升级机制加入前，由 film-os-template 建立的作品项目。"
+    }
+  ]
+}
+

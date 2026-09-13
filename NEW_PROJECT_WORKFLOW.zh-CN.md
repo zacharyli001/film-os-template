@@ -27,14 +27,16 @@ $film-project-launcher
 5. 建立正式 `PROJECT.yaml`、空 Asset Registry、Version Log 和 TapNow Manifest。
 6. 如果是剧集，建立 Series Bible、第一季 Season Map、第一集 Episode Card 与连续性台账。
 7. 初始化独立 Git 仓库并保存第一个版本。
-8. 在用户明确要求团队同步时，建立新的 GitHub Private 仓库并上传。
-9. 在用户明确要求时，将新文件夹加入 Codex 并创建标准部门聊天。
+8. 记录项目当前安装的 Film OS 版本和安全升级基线。
+9. 在用户明确要求团队同步时，建立新的 GitHub Private 仓库并上传。
+10. 在用户明确要求时，将新文件夹加入 Codex 并创建标准部门聊天。
 
 ## 安全规则
 
 - 绝不在 `film-os-template` 中写真实剧本或资产记录。
 - 目标文件夹已存在时立即停止，绝不覆盖。
 - 新项目不复制母版的 `.git` 历史。
+- 后续系统更新必须回到母版，通过 `$film-os-upgrader` 先检查、后批准、再升级。
 - 默认 GitHub 仓库为 Private。
 - 不把图片和视频上传 GitHub；生产媒体仍放 TapNow。
 - GitHub 创建、团队邀请和上传属于外部操作；Codex在执行前必须有用户本次明确指令。

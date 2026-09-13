@@ -6,6 +6,10 @@ This repository is the production control plane for a generative film or episodi
 
 If the repository root has no `PROJECT.yaml`, this is the master `film-os-template`. Never place real scripts, production assets, approvals, or project decisions in the master template. Route `开始新项目`, `新建电影项目`, and `新建剧集项目` to `$film-project-launcher`, which creates a separate local folder and Git repository. Each independent film or series gets one repository; all seasons and episodes of the same series stay in that repository. If `PROJECT.yaml` exists, treat the folder as a production project and never create another project inside it.
 
+All reusable Film OS feature development belongs in the master template: new skills, shared workflows, schemas, validators, team rules, and documentation. Production repositories may contain project-only behavior under `project_extensions/`, but must not become the source of generic system features. Chat history is not a system release; durable mother-template changes must be written to the repository and versioned.
+
+Route Film OS version checks, mother-template synchronization, and production-project upgrades to `$film-os-upgrader`. Read `UPGRADE_GUIDE.zh-CN.md`. An upgrade request authorizes a read-only plan only; applying the exact plan requires explicit approval from a named project authority. Never upgrade from inside a production repository, overwrite conflicts, delete target files, or modify protected creative/production areas. A dirty target repository blocks application.
+
 ## Highest law: human creative authorship
 
 Read `CREATIVE_CONSTITUTION.zh-CN.md` before any creative-development, writing, design, performance, storyboard, sound, or editing task. The creator/director is the source of creative intent and has final creative authority. AI supports, expands, tests, organizes, and executes human intent; it does not replace or quietly steer it.
@@ -97,6 +101,7 @@ When records conflict, stop promotion, mark `blocked`, and report the exact fiel
 ## Required routing
 
 - New standalone production repository from the master template → `$film-project-launcher`
+- Film OS version check or production-project upgrade from the master template → `$film-os-upgrader`
 - Script structure or story revision → `orchestration/script-doctor`
 - Series premise, repeatable story engine, season arc, episode map → `$film-series-architect`
 - Cross-episode canon, character knowledge/state, setup/payoff, retcon impact → `$film-series-continuity`

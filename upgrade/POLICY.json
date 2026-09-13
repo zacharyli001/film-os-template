@@ -1,0 +1,58 @@
+{
+  "policy_version": 1,
+  "managed_files": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "START_HERE.md",
+    "CREATIVE_CONSTITUTION.zh-CN.md",
+    "TEAM_COLLABORATION.zh-CN.md",
+    "CROSS_COMPUTER_SETUP.zh-CN.md",
+    "THREE_PERSON_CODEX_SETUP.zh-CN.md",
+    "MULTI_CHAT_GUIDE.zh-CN.md",
+    "NEW_PROJECT_WORKFLOW.zh-CN.md",
+    "SERIES_MODE.zh-CN.md",
+    "SKILL_CATALOG.zh-CN.md",
+    "TEAM_QUICK_CARD.md",
+    "USER_GUIDE.zh-CN.md",
+    "FILM_OS_VERSION.yaml",
+    "CHANGELOG.zh-CN.md",
+    "UPGRADE_GUIDE.zh-CN.md",
+    "bible/GATES_AND_QC.md",
+    "bible/NAMING.md",
+    "bible/PROTOCOL.md",
+    "bible/TEAM_SOP.md",
+    "tapnow/CANVAS_MANIFEST_SPEC.md",
+    "tapnow/NODE_MAP_SPEC.md"
+  ],
+  "managed_directories": [
+    ".agents/skills",
+    "core",
+    "orchestration",
+    "templates",
+    "tools",
+    "upgrade"
+  ],
+  "protected_files": [
+    "PROJECT.yaml",
+    "tapnow/CANVAS_MANIFEST.yaml",
+    "tapnow/NODE_MAP.yaml",
+    "bible/CHARACTER_BIBLE.md",
+    "bible/LOCATION_BIBLE.md",
+    "bible/VISUAL_BIBLE.md",
+    "bible/SOUND_BIBLE.md"
+  ],
+  "protected_directories": [
+    "registry",
+    "series",
+    "scenes",
+    "prompts",
+    "takes",
+    "project_extensions",
+    "项目工作区",
+    "01_放资料",
+    "02_团队审核",
+    "03_TapNow任务",
+    "04_通过成片"
+  ]
+}

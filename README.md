@@ -24,6 +24,7 @@ $film-os-producer 检查项目，告诉我现在适合进入哪个部门
 - 三人独立 Codex 设置：[`THREE_PERSON_CODEX_SETUP.zh-CN.md`](THREE_PERSON_CODEX_SETUP.zh-CN.md)
 - 极简入门：[`START_HERE.md`](START_HERE.md)
 - 自动新建项目：[`NEW_PROJECT_WORKFLOW.zh-CN.md`](NEW_PROJECT_WORKFLOW.zh-CN.md)
+- 母版维护与安全升级：[`UPGRADE_GUIDE.zh-CN.md`](UPGRADE_GUIDE.zh-CN.md)
 - 连载剧集模式：[`SERIES_MODE.zh-CN.md`](SERIES_MODE.zh-CN.md)
 - 详细手册（管理员需要时再看）：[`USER_GUIDE.zh-CN.md`](USER_GUIDE.zh-CN.md)
 
@@ -72,3 +73,7 @@ The steps above describe the underlying protocol for maintenance and recovery. F
 - Production Supervisor owns registries, versions, and rejects untraceable work.
 
 One person may hold several roles, but every approval still needs a named human and timestamp.
+
+## Mother template upgrades
+
+Develop reusable Film OS features only in this master repository. Production-specific rules stay in that production repository's `project_extensions/`. Use `$film-os-upgrader` from the master to inspect an upgrade; it may apply changes only after a human approves the exact impact list. Project scripts, canon, registries, scenes, approvals, TapNow records, and media are protected.
