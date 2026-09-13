@@ -1,0 +1,18 @@
+schema_version: film-os/proposal/v1
+proposal_id: 20260913T120000Z_short-title
+author_github: replace-me
+created_at: "2026-09-13T12:00:00Z"
+base_main_commit: replace-with-main-commit
+status: proposed
+proposal_type: script_delta
+changes_existing_canon: true
+target_scope: replace-with-scene-or-asset-id
+summary: Replace with a concise proposal summary.
+reason: Replace with the creative or production reason.
+source_files: []
+derived_outputs: []
+director_decision:
+  status: pending
+  decided_by: null
+  decided_at: null
+  notes: null

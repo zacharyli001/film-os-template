@@ -1,0 +1,15 @@
+schema_version: film-os/member-package/v1
+package_id: 20260914T120000Z_member-name
+author_id: replace-me
+created_at: "2026-09-14T12:00:00Z"
+base_commit: replace-with-canonical-commit
+base_tree: replace-with-canonical-tree
+status: non_canonical_proposal
+contains_full_canonical_snapshot: true
+delta_root: 01_个人增量
+derived_work_is_non_canonical: true
+director_review:
+  status: pending
+  reviewed_by: null
+  reviewed_at: null
+  decision: null

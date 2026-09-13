@@ -2,4 +2,6 @@
 __pycache__/
 *.pyc
 work/
+.film-os-local/
+incoming_packages/
 ~$*

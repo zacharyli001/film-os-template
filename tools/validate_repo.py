@@ -14,9 +14,18 @@ REQUIRED = [
     "templates/SHOT_CARD.yaml", "templates/VERSION_LOG.yaml",
     "templates/SERIES_BIBLE.yaml", "templates/SEASON_MAP.yaml",
     "templates/EPISODE_CARD.yaml", "templates/SERIES_CONTINUITY.yaml",
-    "SERIES_MODE.zh-CN.md", "series/README.md",
+    "SERIES_MODE.zh-CN.md",
     "NEW_PROJECT_WORKFLOW.zh-CN.md", "tools/create_project.py",
     "tools/upgrade_project.py",
+    "tools/check_authority_guard.py", "tools/check_local_authority.py",
+    "tools/create_member_package.py", "tools/inspect_member_package.py",
+    "tools/initialize_authority.py",
+    "AUTHORITY_GUARD.zh-CN.md",
+    ".github/CODEOWNERS", ".github/pull_request_template.md",
+    ".github/workflows/film-os-authority-guard.yml",
+    "templates/PROPOSAL_BUNDLE.yaml", "templates/MEMBER_PACKAGE.yaml",
+    "templates/AUTHORITY.yaml",
+    "templates/SUBMISSIONS_README.md",
     ".agents/skills/film-project-launcher/SKILL.md",
     ".agents/skills/film-os-upgrader/SKILL.md",
     ".agents/skills/film-series-architect/SKILL.md",
@@ -24,10 +33,38 @@ REQUIRED = [
     "tapnow/CANVAS_MANIFEST_SPEC.md", "tapnow/NODE_MAP_SPEC.md",
 ]
 
+# The master validates its separated project scaffold.  A generated
+# production repository materializes that scaffold at its normal root paths
+# and therefore must not be expected to contain the master-only wrapper.
 errors = []
+if not (ROOT / "PROJECT.yaml").is_file():
+    REQUIRED.extend([
+        "project_template/README.md", "project_template/series/README.md",
+        "project_template/governance/AUTHORITY.yaml",
+        "project_template/submissions/README.md",
+    ])
+else:
+    REQUIRED.extend([
+        "governance/AUTHORITY.yaml", "submissions/README.md",
+    ])
+
+    authority_path = ROOT / "governance/AUTHORITY.yaml"
+    if authority_path.is_file():
+        authority_text = authority_path.read_text(encoding="utf-8")
+        if not re.search(r"^\s*local_key_sha256:\s*[0-9a-f]{64}\s*$", authority_text, re.MULTILINE):
+            errors.append("production authority must contain a director local-key fingerprint")
+
 for rel in REQUIRED:
     if not (ROOT / rel).is_file():
         errors.append(f"missing required file: {rel}")
+
+workflow_path = ROOT / ".github/workflows/film-os-authority-guard.yml"
+if workflow_path.is_file():
+    workflow_text = workflow_path.read_text(encoding="utf-8")
+    if "authority-base/tools/check_authority_guard.py" not in workflow_text:
+        errors.append("authority workflow must execute the guard from the trusted main checkout")
+    if "--repo candidate" not in workflow_text:
+        errors.append("authority workflow must inspect the proposed branch in a separate checkout")
 
 skill_files = (
     list((ROOT / "core").glob("*/SKILL.md"))

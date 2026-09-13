@@ -4,7 +4,7 @@ Film OS is a Codex-operated production repository for standalone films and episo
 
 ## 团队请从这里开始
 
-**这是一个可以从“一句话想法”开始的电影制作工作室，不要求先有剧本。** 你可以在同一个 Codex 项目里开不同聊天，手动调用不同部门 Skill。所有聊天共享 `项目工作区` 里的项目资料。
+**这是一个可以从“一句话想法”开始的电影制作工作室，不要求先有剧本。** 在由母版创建的独立作品仓库中，你可以开不同聊天，手动调用不同部门 Skill；所有聊天共享该作品仓库的 `项目工作区` 资料。母版自身不承载真实作品。
 
 ```text
 $film-concept-lab 我只有一个想法：……，帮我一起发展
@@ -22,6 +22,7 @@ $film-os-producer 检查项目，告诉我现在适合进入哪个部门
 - 团队协作制度：[`TEAM_COLLABORATION.zh-CN.md`](TEAM_COLLABORATION.zh-CN.md)
 - 跨电脑协作设置：[`CROSS_COMPUTER_SETUP.zh-CN.md`](CROSS_COMPUTER_SETUP.zh-CN.md)
 - 三人独立 Codex 设置：[`THREE_PERSON_CODEX_SETUP.zh-CN.md`](THREE_PERSON_CODEX_SETUP.zh-CN.md)
+- 主线只读与导演收束：[`AUTHORITY_GUARD.zh-CN.md`](AUTHORITY_GUARD.zh-CN.md)
 - 极简入门：[`START_HERE.md`](START_HERE.md)
 - 自动新建项目：[`NEW_PROJECT_WORKFLOW.zh-CN.md`](NEW_PROJECT_WORKFLOW.zh-CN.md)
 - 母版维护与安全升级：[`UPGRADE_GUIDE.zh-CN.md`](UPGRADE_GUIDE.zh-CN.md)
@@ -32,7 +33,7 @@ $film-os-producer 检查项目，告诉我现在适合进入哪个部门
 
 ## Administrator/manual fallback
 
-1. Copy `templates/PROJECT.yaml`, `ASSET_REGISTRY.yaml`, and `VERSION_LOG.yaml` to the repository root/`registry/` as shown below.
+1. In a production repository, copy `templates/PROJECT.yaml`, `ASSET_REGISTRY.yaml`, and `VERSION_LOG.yaml` to the repository root/`registry/` as shown below. In the master, let `$film-project-launcher` materialize `project_template/` instead of manually creating production records.
 2. Put the screenplay in `script/` and complete project/bible facts.
 3. Ask Codex: `运行 script-doctor，建立 Film OS 项目。` Review and approve G1.
 4. Ask: `处理 S001 到资产锁定。` Codex creates scene facts, asset requests, LIRA prompts, and TapNow asset nodes. Approve G2.
@@ -45,17 +46,33 @@ Useful commands are natural language: `处理 S024`, `列出未锁定资产`, `�
 ## Repository map
 
 ```text
+.agents/skills/        Codex可发现的 Film OS Skill 入口
 core/                 immutable source skills + thin Codex wrappers
 orchestration/        workflow skills
 bible/                canon, visual, character, location, sound standards
+templates/            copyable protocol templates
+tools/                 local validation
+upgrade/              mother-template upgrade policy and tools
+project_template/     project-only scaffold; expanded into each new production repo
+.github/              optional GitHub Pro defense-in-depth
+```
+
+母版与作品项目是两棵树：母版根目录只维护 Film OS 系统；`project_template/` 只保存新作品需要的空白项目骨架。运行 `$film-project-launcher` 时，Codex 会把 `project_template/` 展开到新的独立作品仓库根目录，因此真实项目资料不会留在母版中，也不会被母版升级覆盖。
+
+独立作品仓库展开后，才会出现下面这些项目资料路径：
+
+```text
+PROJECT.yaml
 registry/             project-wide source-of-truth YAML
 series/               series bible, season maps, episode cards
 scenes/Sxxx/          scene card, spatial map, shot cards
 prompts/shot-packs/   sealed current-shot inputs/compiled prompts
 tapnow/               Canvas Manifest and Node Map
 takes/                take metadata/QC, not raw media by default
-templates/            copyable protocol templates
-tools/                 local validation
+项目工作区/             human-readable shared project memory
+governance/           named director and canonical promotion authority
+submissions/          append-only member proposals and proposal-derived work
+.film-os-local/        unshared local director key; never committed
 ```
 
 ## Install/use in Codex

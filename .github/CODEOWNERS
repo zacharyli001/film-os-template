@@ -1,0 +1,3 @@
+# Film OS 正式主线的唯一审核人。
+# GitHub 的 main 分支保护必须同时开启“Require review from Code Owners”。
+* @zacharyli001

@@ -22,14 +22,17 @@ $film-project-launcher
 
 1. 确认当前仓库是 Film OS 母版。
 2. 在母版旁边的 `Film Projects` 文件夹建立独立项目副本。
-3. 保留 Film OS、所有 Skills、模板与团队规则。
-4. 清除演示场次、演示资产、演示节点和演示 Take。
+3. 从母版系统树保留 Film OS、所有 Skills、模板与团队规则，并把 `project_template/` 展开为作品项目资料树。
+4. 清除项目骨架中的演示场次、演示资产、演示节点和演示 Take。
 5. 建立正式 `PROJECT.yaml`、空 Asset Registry、Version Log 和 TapNow Manifest。
 6. 如果是剧集，建立 Series Bible、第一季 Season Map、第一集 Episode Card 与连续性台账。
 7. 初始化独立 Git 仓库并保存第一个版本。
 8. 记录项目当前安装的 Film OS 版本和安全升级基线。
-9. 在用户明确要求团队同步时，建立新的 GitHub Private 仓库并上传。
-10. 在用户明确要求时，将新文件夹加入 Codex 并创建标准部门聊天。
+9. 生成只保存在导演电脑上的本地导演钥匙，并写入唯一导演身份指纹。
+10. 建立成员只能新增的 `submissions/` 提案区和完整成员包工具。
+11. 在用户明确要求团队同步时，建立导演专属的 GitHub Private 正式仓库并上传；不给成员写权限。
+12. 为成员发布正式快照；成员分别使用自己的 GitHub 交付仓库。
+13. 在用户明确要求时，将新文件夹加入 Codex 并创建标准部门聊天。
 
 ## 安全规则
 
@@ -38,6 +41,9 @@ $film-project-launcher
 - 新项目不复制母版的 `.git` 历史。
 - 后续系统更新必须回到母版，通过 `$film-os-upgrader` 先检查、后批准、再升级。
 - 默认 GitHub 仓库为 Private。
+- 免费方案下，普通成员不拥有导演正式仓库的任何写权限。
+- 普通成员只能新增本人提案包；所有已有文件和正式目录对成员只读。
+- 成员交付包必须同时包含工作所依据的正式基线和个人增量。
 - 不把图片和视频上传 GitHub；生产媒体仍放 TapNow。
 - GitHub 创建、团队邀请和上传属于外部操作；Codex在执行前必须有用户本次明确指令。
 

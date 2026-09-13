@@ -1,0 +1,39 @@
+name: Film OS Authority Guard
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened, edited]
+
+permissions:
+  contents: read
+
+jobs:
+  append-only-authority-check:
+    name: Append-only authority check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read trusted guard from main
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 0
+          path: authority-base
+
+      - name: Read proposed branch separately
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          path: candidate
+
+      - name: Enforce Film OS authority
+        run: |
+          python3 authority-base/tools/check_authority_guard.py \
+            --repo candidate \
+            --base "${{ github.event.pull_request.base.sha }}" \
+            --head "${{ github.event.pull_request.head.sha }}" \
+            --actor "${{ github.actor }}" \
+            --head-ref "${{ github.head_ref }}" \
+            --director "zacharyli001"

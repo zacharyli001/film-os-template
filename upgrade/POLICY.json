@@ -1,5 +1,5 @@
 {
-  "policy_version": 1,
+  "policy_version": 2,
   "managed_files": [
     ".gitignore",
     "AGENTS.md",
@@ -18,6 +18,10 @@
     "FILM_OS_VERSION.yaml",
     "CHANGELOG.zh-CN.md",
     "UPGRADE_GUIDE.zh-CN.md",
+    "AUTHORITY_GUARD.zh-CN.md",
+    ".github/CODEOWNERS",
+    ".github/workflows/film-os-authority-guard.yml",
+    ".github/pull_request_template.md",
     "bible/GATES_AND_QC.md",
     "bible/NAMING.md",
     "bible/PROTOCOL.md",
@@ -43,6 +47,8 @@
     "bible/SOUND_BIBLE.md"
   ],
   "protected_directories": [
+    "governance",
+    "submissions",
     "registry",
     "series",
     "scenes",

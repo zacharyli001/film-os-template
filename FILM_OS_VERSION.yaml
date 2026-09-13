@@ -1,7 +1,6 @@
 schema_version: film-os/version/v1
 product: film-os
-release: 1.1.0
+release: 1.4.0
 channel: stable
 released_at: "2026-09-13T00:00:00Z"
 upgrade_policy: upgrade/POLICY.json
-

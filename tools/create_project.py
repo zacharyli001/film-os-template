@@ -9,6 +9,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import secrets
 import shutil
 import subprocess
 import sys
@@ -58,8 +59,31 @@ def replace_once(text: str, old: str, new: str, label: str) -> str:
 
 
 def copy_template(target: Path) -> None:
-    ignored = shutil.ignore_patterns(".git", ".DS_Store", "__pycache__", "*.pyc", "~$*", "work")
+    """Copy the Film OS system tree and materialize the project scaffold.
+
+    The master repository keeps reusable Film OS code/rules at its root and
+    keeps project-only scaffolding under ``project_template/``.  A production
+    repository must receive the scaffold at its normal runtime paths, but must
+    never receive the master-only ``project_template`` wrapper directory.
+    """
+    ignored = shutil.ignore_patterns(
+        ".git", ".DS_Store", "__pycache__", "*.pyc", "~$*", "work",
+        "project_template", "Film OS 团队使用说明书.docx"
+    )
     shutil.copytree(TEMPLATE_ROOT, target, ignore=ignored)
+
+    project_source = TEMPLATE_ROOT / "project_template"
+    for item in project_source.iterdir():
+        # This master-only guide explains the scaffold itself; it must not
+        # replace the production repository's system README.
+        if item.name == "README.md":
+            continue
+        destination = target / item.name
+        if item.is_dir():
+            shutil.copytree(item, destination, dirs_exist_ok=True)
+        else:
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(item, destination)
 
 
 def configure_project_yaml(
@@ -255,6 +279,42 @@ def update_overview(target: Path, title: str, production_type: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def configure_authority(target: Path, project_id: str, director_github: str) -> None:
+    authority = target / "governance/AUTHORITY.yaml"
+    text = authority.read_text(encoding="utf-8")
+    text = replace_once(text, "project_id: DEMO", f"project_id: {project_id}", "authority.project_id")
+    text = replace_once(
+        text,
+        "  github_username: zacharyli001",
+        f"  github_username: {director_github}",
+        "authority.director.github_username",
+    )
+    local_secret = secrets.token_urlsafe(48)
+    secret_hash = hashlib.sha256(local_secret.encode("utf-8")).hexdigest()
+    text = replace_once(
+        text,
+        "  local_key_sha256: null",
+        f"  local_key_sha256: {secret_hash}",
+        "authority.director.local_key_sha256",
+    )
+    authority.write_text(text, encoding="utf-8")
+
+    key_path = target / ".film-os-local/DIRECTOR.key"
+    key_path.parent.mkdir(parents=True, exist_ok=True)
+    key_path.write_text(local_secret + "\n", encoding="utf-8")
+    key_path.chmod(0o600)
+
+    codeowners = target / ".github/CODEOWNERS"
+    owner_text = codeowners.read_text(encoding="utf-8")
+    owner_text = owner_text.replace("* @zacharyli001", f"* @{director_github}")
+    codeowners.write_text(owner_text, encoding="utf-8")
+
+    workflow = target / ".github/workflows/film-os-authority-guard.yml"
+    workflow_text = workflow.read_text(encoding="utf-8")
+    workflow_text = workflow_text.replace('--director "zacharyli001"', f'--director "{director_github}"')
+    workflow.write_text(workflow_text, encoding="utf-8")
+
+
 def initialize_git(target: Path) -> tuple[bool, str]:
     try:
         subprocess.run(["git", "init", "-b", "main"], cwd=target, check=True, capture_output=True, text=True)
@@ -281,6 +341,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--episode-count", type=int)
     parser.add_argument("--episode-runtime", type=int, help="Target episode runtime in seconds")
     parser.add_argument("--orientation", choices=("horizontal", "vertical"))
+    parser.add_argument(
+        "--director-github",
+        default="zacharyli001",
+        help="GitHub username with exclusive canonical promotion authority",
+    )
     parser.add_argument("--no-git", action="store_true", help="Skip local Git initialization")
     return parser.parse_args()
 
@@ -294,6 +359,8 @@ def main() -> int:
             raise ValueError("计划集数必须大于0。")
         if args.episode_runtime is not None and args.episode_runtime < 1:
             raise ValueError("单集时长必须大于0秒。")
+        if not re.fullmatch(r"[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?", args.director_github):
+            raise ValueError("导演 GitHub 用户名格式无效。")
         folder_name = clean_title(args.folder_name) if args.folder_name else folder_name_for(title)
         parent = args.output_parent.expanduser().resolve()
         target = (parent / folder_name).resolve()
@@ -331,6 +398,7 @@ def main() -> int:
             if series_ledger.exists():
                 series_ledger.unlink()
         update_overview(target, title, args.production_type)
+        configure_authority(target, project_id, args.director_github)
         initialize_installation(target)
         git_ok, git_note = (False, "Git initialization skipped") if args.no_git else initialize_git(target)
         result = {

@@ -1,0 +1,25 @@
+schema_version: film-os/authority/v1
+project_id: DEMO
+canonical_branch: main
+director:
+  github_username: zacharyli001
+  exclusive_promotion_authority: true
+  local_key_sha256: null
+member_policy:
+  existing_files: read_only
+  submission_mode: append_only
+  allowed_root: submissions
+  branch_prefix: proposal
+  proposal_status: proposed
+promotion_policy:
+  director_must_review: true
+  director_creates_canonical_version: true
+  proposal_never_becomes_canon_automatically: true
+identity_policy:
+  mode: local_director_key
+  unverified_default_role: contributor
+  codex_account_claim_is_not_authority: true
+free_github_mode:
+  canonical_repository_write_access: director_only
+  contributor_delivery: self_contained_member_package
+  package_contains_base_snapshot_and_delta: true
