@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Sync configured member delivery repositories for director review only."""
+"""Sync configured member delivery repositories for director review only.
+
+提案清单一律从 Git 引用读取：全部 ``proposal/*`` 分支，以及成员主分支。
+主分支理论上只是正式基线的只读镜像；一旦主分支里检出提案文件，说明该成员
+仍在使用旧入口，工具会明确报警，而不是安静漏过。
+"""
 
 from __future__ import annotations
 
@@ -206,16 +211,29 @@ def sync_one(
         main_tree = git_text(target, "rev-parse", f"{main_ref}^{{tree}}", check=False) if main_commit else ""
         canonical_head = git_text(canonical, "rev-parse", "HEAD")
         canonical_tree = git_text(canonical, "rev-parse", f"{canonical_head}^{{tree}}")
+        main_records = (
+            proposal_records(target, canonical, main_ref, main_commit, canonical_head)
+            if main_commit
+            else []
+        )
+        branch_records: list[dict[str, Any]] = []
+        for ref, commit in remote_refs(target, prefix):
+            branch_records.extend(
+                proposal_records(target, canonical, ref, commit, canonical_head)
+            )
         result.update(
             status="ready_for_review",
             main_commit=main_commit or None,
             main_is_exact_canonical_commit=bool(main_commit and main_commit == canonical_head),
             main_tree_matches_canonical=bool(main_tree and main_tree == canonical_tree),
-            proposals=[],
+            main_contains_proposals=bool(main_records),
+            proposals=branch_records + main_records,
         )
-        for ref, commit in remote_refs(target, prefix):
-            result["proposals"].extend(
-                proposal_records(target, canonical, ref, commit, canonical_head)
+        if main_records:
+            result["warning"] = (
+                "成员主分支里检出提案文件：该成员可能仍在使用旧入口，提案没有走独立的 "
+                f"{prefix}<成员>/<UTC时间> 分支，主分支也不再是正式基线镜像。"
+                "请审核后要求该成员按新流程整理交付仓库。"
             )
         return result
     except (OSError, subprocess.CalledProcessError, ValueError) as exc:
@@ -267,6 +285,13 @@ def main() -> int:
             "action": "review_only_no_canonical_files_changed",
             "repositories": reports,
         }
+        main_warnings = [
+            f"{item.get('display_name') or item.get('member_id')}: 主分支包含提案，未走独立提案分支"
+            for item in reports
+            if item.get("main_contains_proposals")
+        ]
+        if main_warnings:
+            output["warnings"] = main_warnings
         print(json.dumps(output, ensure_ascii=False, indent=2))
         return 0 if all(item.get("status") == "ready_for_review" for item in reports) else 1
     except Exception as exc:
