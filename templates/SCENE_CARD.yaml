@@ -10,9 +10,16 @@ scene:
   status: draft
   slugline: INT. ROOM - NIGHT
   scene_event: ""
+  dramatic_question: ""
+  scene_driver: ""
+  scene_resistance: ""
   value_start: ""
   value_end: ""
   turn: ""
+  information_advantage: []
+  external_intensity: null
+  internal_intensity: null
+  estimated_duration_seconds: null
   information_revealed: []
   character_conflict: ""
   physical_situation: ""

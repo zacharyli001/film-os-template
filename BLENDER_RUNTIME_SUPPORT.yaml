@@ -1,0 +1,44 @@
+schema_version: film-os/blender-runtime-support/v1
+policy:
+  scope: reusable_system_runtime
+  localhost_only: true
+  per_machine_observable_verification_required: true
+  template_verification_never_proves_member_runtime: true
+preferred_stack:
+  platform: macos_apple_silicon
+  blender:
+    version: 5.2.1 LTS
+    distribution: official_apple_silicon_dmg
+  codex_plugin:
+    package: dcc-mcp@dcc-mcp
+    version: 0.19.105
+  controller:
+    cli: dcc-mcp-cli
+    cli_version: 0.20.29
+    core_version: 0.20.29
+    server_version: 0.20.29
+  adapter:
+    package: dcc-mcp-blender
+    version: 0.2.4
+verified_capabilities:
+  blender_process_discovery: true
+  typed_skill_loading: true
+  scene_selection_readback: true
+  viewport_capture: true
+  verification_date: "2026-09-14"
+known_compatibility:
+  - id: dcc_mcp_blender_024_missing_dispatcher_module
+    applies_to: dcc-mcp-blender==0.2.4
+    symptom: main_thread_tools_fail_to_load_or_time_out
+    cause: adapter_wheel_references_missing_dispatcher_module
+    safe_workaround: explicitly_start_exported_blender_ui_dispatcher_in_startup_hook
+    requirements:
+      - preserve_original_startup_hook
+      - bind_localhost_only
+      - use_exported_official_adapter_class
+      - restart_blender
+      - repeat_scene_readback_and_viewport_capture
+    status: workaround_verified
+fallback:
+  controller: codex-blender
+  use_only_when_preferred_stack_is_unavailable

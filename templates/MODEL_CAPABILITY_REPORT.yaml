@@ -1,0 +1,24 @@
+schema_version: film-os/model-capability-report/v1
+runtime_id: replace-with-provider-model-client
+recorded_at: null
+recorded_by: replace-me
+provider: unknown
+model_id: unknown
+client: codex
+base_commit: replace-with-canonical-commit
+capability_report_status: unverified
+capabilities:
+  text_generation: unknown
+  instruction_following: unknown
+  long_context: unknown
+  structured_output: unknown
+  file_read: unknown
+  file_write: unknown
+  tool_execution: unknown
+  vision_input: unknown
+  blender_scene_control: unknown
+  viewport_capture: unknown
+observed_tests: []
+restrictions: []
+approved_task_profiles: []
+notes: null

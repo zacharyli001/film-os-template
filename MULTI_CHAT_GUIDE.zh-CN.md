@@ -100,14 +100,25 @@ $film-acting
 读取人物圣经和第3场事实，为女主设计该场表演适配。
 ```
 
-### 聊天 8：视频 Prompt 室
+### 聊天 8：Blender 预演室（仅复杂镜头）
+
+复杂镜头可以在此之前单独开一个按需预演聊天；普通镜头不需要：
+
+```text
+$film-blender-previz
+读取当前 Shot Card 和空间地图，判断是否需要 Blender 白模预演。先说明理由和范围，不要直接操作。
+```
+
+预演只处理摄影机、空间、走位、遮挡、深度和时间，接受后纳入原来的分镜确认，不增加新 Gate。
+
+### 聊天 9：视频 Prompt 室
 
 ```text
 $film-cinedance
 读取已经密封的 S003_SH020 Shot Pack，编译最终 Seedance Prompt。
 ```
 
-### 聊天 9：TapNow 与生成 QC
+### 聊天 10：TapNow 与生成 QC
 
 ```text
 $film-tapnow-bridge

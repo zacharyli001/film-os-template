@@ -30,6 +30,12 @@ paths:
   version_log: registry/VERSION_LOG.yaml
   scenes: scenes
   tapnow_manifest: tapnow/CANVAS_MANIFEST.yaml
+integrations:
+  blender_previz:
+    enabled: false
+    preferred_adapter: dcc_mcp_blender
+    media_root_uri: null
+    require_typed_tools: true
 gates:
   G1_SCRIPT_LOCK: {status: pending, approver: null, approved_at: null, note: null}
   G2_ASSET_LOCK: {status: pending, approver: null, approved_at: null, note: null}

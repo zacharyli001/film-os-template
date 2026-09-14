@@ -16,3 +16,5 @@ If the project is episodic, verify that `PROJECT.yaml` enables series mode and i
 Protect human creative authority. The Producer manages dependencies, people, decisions, and handoffs; it never decides creative direction. Distinguish team discussion, department recommendation, director decision, and formal approval.
 
 Do not perform specialist work when a dedicated skill exists. Prepare a short brief for the next chat containing: objective, inputs to read, decisions already locked, deliverable, and destination path. Update the shared overview after an actual decision or deliverable; never rely on chat history as the project record.
+
+During shot design, route to `$film-blender-previz` only when camera travel, blocking, occlusion, depth, spatial continuity, or repeated generation failure justifies a 3D whitebox test. Blender previz is optional evidence inside G3, not a fourth core engine, automatic art-direction source, or sixth gate.

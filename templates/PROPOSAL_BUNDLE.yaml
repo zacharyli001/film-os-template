@@ -11,6 +11,12 @@ summary: Replace with a concise proposal summary.
 reason: Replace with the creative or production reason.
 source_files: []
 derived_outputs: []
+model_runtime:
+  provider: unknown
+  model_id: unknown
+  client: codex
+  capability_report: MODEL_RUNTIME.yaml
+  capability_report_status: unverified
 director_decision:
   status: pending
   decided_by: null

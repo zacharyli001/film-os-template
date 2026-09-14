@@ -10,6 +10,7 @@
 |---|---|---|
 | `$film-project-launcher` | 项目启动器 | 从母版自动建立独立电影/剧集文件夹、Git 仓库和项目记录 |
 | `$film-os-upgrader` | 系统升级员 | 从母版检查并安全升级作品项目，不覆盖创作与生产资料 |
+| `$film-model-router` | 模型适配检查员 | 首次使用、切换 OpenAI/DeepSeek 等模型或更换接入方式时，检查能安全完成哪些任务 |
 | `$film-os-producer` | 制片总控 | 不知道下一步、检查全项目、准备跨部门交接 |
 | `$film-production-supervisor` | 生产监督 | 版本、审核、Prompt Audit、Take QC、返工 |
 
@@ -20,6 +21,8 @@
 | `$film-concept-lab` | 创意开发室 | 把一句想法发展成创意简报 |
 | `$film-series-architect` | 剧集架构室 | 连载剧集圣经、持续故事引擎、季弧线和分集表 |
 | `$film-series-continuity` | 连续性编辑室 | 跨集正史、人物知识/状态、关系、资产状态和伏笔回收 |
+| `$film-writers-room` | 编剧室主持 | 组织多人提案、破故事、压力测试、Notes 和导演决策单，不把讨论自动变成正式设定 |
+| `$film-master-reference` | 名家参考室（确认后启用） | 人说“名家参考”“请神上身”或点名大师时可进入候选；展示影响并经人再次确认后才真正调用 |
 | `$film-story-architect` | 故事架构室 | 世界、人物、故事梗概、结构、分场大纲 |
 | `$film-screenplay-writer` | 剧本室 | Treatment、场景、对白、剧本版本 |
 | `$film-script-doctor` | 剧本医生 | 诊断和优化已有剧本 |
@@ -39,6 +42,7 @@
 | `$film-storyboard-director` | 分镜导演室 | Shotlist、Coverage、构图、剪辑关系 |
 | `$film-spatial-system` | 空间设计室 | Location Map、轴线、视线、Blocking、First Frame |
 | `$film-acting` | 表演导演室 | 使用原始 ACTING 设计人物行为和表演节拍 |
+| `$film-blender-previz` | Blender 预演室（按需） | 用白模、人物占位和摄影机动画验证复杂镜头的空间、走位、遮挡与节奏 |
 
 ## 从镜头到生成
 
@@ -60,4 +64,6 @@
 - 创作探索可以来回反复；一旦改变已确认内容，Codex 会提示受影响的下游成果。
 - 想手动控制就直接点名 Skill；不确定时才找 `$film-os-producer`。
 - LIRA、ACTING、CINEDANCE 保留上传原始规则，外围 Skills 不重写它们。
+- Blender 预演不是第四个核心引擎，也不是每个镜头的必经步骤；只有复杂空间/运动确实需要验证时才启用，结果纳入原有 G3 分镜确认。
+- 团队可使用不同底层模型；任务按实际能力分配，模型名称不产生主线权限。
 - 连载项目先建立剧集圣经和季结构；之后每一集重复使用原有剧本、资产、分镜、表演、视频和审核部门。

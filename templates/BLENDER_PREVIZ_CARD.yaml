@@ -1,0 +1,101 @@
+schema_version: film-os/blender-previz/v1
+project_id: DEMO
+series_id: null
+season_id: null
+episode_id: null
+previz:
+  previz_id: S001_SH010_PV001
+  shot_id: S001_SH010
+  shot_version: v01
+  version: v01
+  status: proposed
+  created_at: null
+  created_by: null
+  base_commit: null
+  purpose: ""
+  trigger_reasons: []
+  review_questions: []
+  controls:
+    - camera
+    - blocking
+    - composition
+    - timing
+    - spatial_geometry
+  must_not_control:
+    - character_identity
+    - wardrobe_design
+    - surface_materials
+    - color_palette
+    - final_lighting_style
+    - performance_nuance
+  scene_setup:
+    coordinate_system: ""
+    scale_basis: ""
+    landmarks: []
+    proxy_performers: []
+    proxy_props: []
+  camera:
+    camera_id: S001_SH010_CAM01
+    aspect_ratio: "2.39:1"
+    full_frame_equivalent_mm: null
+    fov_degrees_diagonal: null
+    height_meters: null
+    frame_rate: 24
+    frame_start: 1
+    frame_end: 144
+    duration_seconds: 6.0
+    interpolation: ""
+    first_frame: ""
+    last_frame: ""
+    timed_keyframes: []
+  blocking:
+    timed_marks: []
+    occlusion_checks: []
+    collision_checks: []
+  runtime:
+    adapter: dcc_mcp_blender
+    adapter_version: null
+    blender_version: null
+    provider: unknown
+    model_id: unknown
+    client: codex
+    capability_report_status: unverified
+    observed_blender_control: false
+    observed_viewport_capture: false
+    raw_python_used: false
+    raw_python_approval: null
+  deliverables:
+    blend_uri: null
+    preview_video_uri: null
+    image_sequence_uri: null
+    first_frame_uri: null
+    last_frame_uri: null
+    camera_data_uri: null
+    checksum: null
+  tapnow_handoff:
+    reference_job: motion_geometry
+    preferred_mode: video_reference_if_supported
+    node_id: null
+    non_inheritance:
+      - proxy_identity
+      - proxy_body_shape
+      - placeholder_wardrobe
+      - whitebox_materials
+      - preview_lighting
+      - viewport_artifacts
+  iteration:
+    parent_version: null
+    change_variable: null
+    change_request: null
+    preserve: []
+  review:
+    status: pending
+    reviewer: null
+    reviewed_at: null
+    note: null
+    eligible_for_g3: false
+  source_versions:
+    scene_card: null
+    shot_card: null
+    spatial_map: null
+    asset_registry: null

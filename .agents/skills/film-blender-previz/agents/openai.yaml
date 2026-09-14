@@ -1,0 +1,7 @@
+interface:
+  display_name: "Blender 预演室"
+  short_description: "为复杂镜头制作白模、走位和摄影机运动参考"
+  default_prompt: "使用 $film-blender-previz，判断当前镜头是否需要 Blender 白模预演；先说明理由和范围，不要直接操作。"
+
+policy:
+  allow_implicit_invocation: true

@@ -8,6 +8,11 @@ status: non_canonical_proposal
 contains_full_canonical_snapshot: true
 delta_root: 01_个人增量
 derived_work_is_non_canonical: true
+model_runtime:
+  provider: unknown
+  model_id: unknown
+  client: codex
+  capability_report_status: unverified
 director_review:
   status: pending
   reviewed_by: null

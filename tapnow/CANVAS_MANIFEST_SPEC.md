@@ -7,3 +7,5 @@ Required canvas fields: `canvas_id`, `display_name`, `project_id`, `purpose`, `s
 For series work, also record `series_id`, `season_id`, and `episode_id`. Keep permanent character/location/prop asset canvases reusable at series scope, but create storyboard and formal shot canvases inside one episode scope. A shot canvas must never mix takes from another episode, even when locations and cast are identical.
 
 Outputs are imported back by adding their URI/path, node ID, generated timestamp, and target Film OS entity/version. Human QC then changes Registry/Shot state separately.
+
+An accepted Blender preview remains a shot-scoped source rather than a new production canvas. Record its Previz Card ID/version and shared URI in `film_os_sources`, then bind it through a `previz_reference` node. The manifest must state whether TapNow receives a preview video or extracted frames and must preserve the preview's declared non-inheritance list.

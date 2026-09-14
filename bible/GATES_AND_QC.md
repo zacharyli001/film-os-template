@@ -17,5 +17,6 @@ In series mode, the same five gate types repeat with an explicit scope. A Series
 9. No `same as before`, `continues`, `last shot`, stale tags, scene chatter, or unused entities.
 10. Retake changes one primary variable and preserves all approved variables.
 11. For a series shot, every active state is valid for the current episode and no past prompt, future spoiler, or unrelated episode fact leaks into the pack.
+12. If Blender previz is attached, its accepted version matches the current Shot Card; preview URI/frame inputs resolve; camera, blocking, timing, and spatial facts agree; and proxy identity/body/wardrobe, whitebox materials, preview lighting, and viewport artifacts are excluded from inheritance.
 
 Hero performance must meet the ACTING engine's own QC threshold; do not invent a substitute scale.

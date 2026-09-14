@@ -1,0 +1,110 @@
+schema_version: film-os/model-policy/v1
+policy:
+  provider_neutral: true
+  provider_or_model_never_grants_authority: true
+  unverified_capability_defaults_to_unsupported: true
+  api_keys_must_not_be_stored_in_repository: true
+  human_creative_authority_is_model_independent: true
+capability_values:
+  - supported
+  - unsupported
+  - unknown
+capabilities:
+  text_generation: Generate and revise long-form Chinese production text.
+  instruction_following: Preserve Film OS rules, scope, locks, and human decisions.
+  long_context: Read the minimum approved project context required for a task.
+  structured_output: Produce stable YAML or JSON that passes validation.
+  file_read: Read repository files through the current client or harness.
+  file_write: Create permitted files through the current client or harness.
+  tool_execution: Run project validators and packaging tools through the current client or harness.
+  vision_input: Inspect actual image pixels rather than relying on filenames or descriptions.
+  blender_scene_control: Operate a live local Blender session through verified structured tools.
+  viewport_capture: Capture and inspect observable Blender viewport or render output.
+task_profiles:
+  creative_text:
+    required:
+      - text_generation
+      - instruction_following
+      - file_read
+    preferred:
+      - long_context
+      - structured_output
+    fallback: proposal_text_only
+  structured_project_records:
+    required:
+      - instruction_following
+      - file_read
+      - file_write
+      - structured_output
+    preferred:
+      - tool_execution
+    fallback: draft_for_verified_runtime
+  asset_prompt_from_text:
+    required:
+      - text_generation
+      - instruction_following
+      - file_read
+    preferred:
+      - long_context
+    fallback: text_prompt_only
+  reference_visual_analysis:
+    required:
+      - instruction_following
+      - file_read
+      - vision_input
+    preferred:
+      - long_context
+    fallback: human_observation_required
+  visual_qc:
+    required:
+      - instruction_following
+      - vision_input
+    preferred:
+      - file_read
+      - structured_output
+    fallback: visual_qc_not_performed
+  shot_prompt_compilation:
+    required:
+      - text_generation
+      - instruction_following
+      - file_read
+      - long_context
+    preferred:
+      - structured_output
+    fallback: prompt_draft_requires_audit
+  package_export:
+    required:
+      - instruction_following
+      - file_read
+      - file_write
+      - tool_execution
+    preferred:
+      - structured_output
+    fallback: manual_handoff_required
+  blender_previz:
+    required:
+      - instruction_following
+      - file_read
+      - file_write
+      - tool_execution
+      - blender_scene_control
+      - viewport_capture
+    preferred:
+      - vision_input
+      - structured_output
+      - long_context
+    fallback: previz_plan_only_no_blender_execution
+provenance:
+  required_fields:
+    - provider
+    - model_id
+    - client
+    - capability_report_status
+    - base_commit
+  report_location:
+    director: governance/MODEL_RUNTIME.yaml
+    contributor: submissions/<member_id>/<proposal_id>/MODEL_RUNTIME.yaml
+security:
+  canonical_promotion_requires_local_director_key: true
+  contributor_outputs_are_always_non_canonical: true
+  capability_report_is_routing_evidence_not_identity_proof: true

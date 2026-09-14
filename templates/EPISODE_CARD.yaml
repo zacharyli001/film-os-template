@@ -13,6 +13,8 @@ episode:
   episode_promise: ""
   opening_hook: ""
   dramatic_question: ""
+  episode_closure: ""
+  series_movement: ""
   a_story: ""
   b_story: ""
   c_story: null
@@ -20,6 +22,10 @@ episode:
   climax: ""
   ending_hook: ""
   emotional_change: ""
+  external_rhythm: []
+  internal_rhythm: []
+  runtime_budget: []
+  information_release: []
   continuity_in: []
   continuity_out: []
   character_state_changes: []

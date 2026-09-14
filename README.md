@@ -22,6 +22,9 @@ $film-os-producer 检查项目，告诉我现在适合进入哪个部门
 - 团队协作制度：[`TEAM_COLLABORATION.zh-CN.md`](TEAM_COLLABORATION.zh-CN.md)
 - 跨电脑协作设置：[`CROSS_COMPUTER_SETUP.zh-CN.md`](CROSS_COMPUTER_SETUP.zh-CN.md)
 - 三人独立 Codex 设置：[`THREE_PERSON_CODEX_SETUP.zh-CN.md`](THREE_PERSON_CODEX_SETUP.zh-CN.md)
+- OpenAI / DeepSeek 等多模型适配：[`MODEL_COMPATIBILITY.zh-CN.md`](MODEL_COMPATIBILITY.zh-CN.md)
+- 复杂镜头 Blender 白模预演：[`BLENDER_PREVIZ.zh-CN.md`](BLENDER_PREVIZ.zh-CN.md)
+- Blender 已验证运行组合：[`BLENDER_RUNTIME_SUPPORT.yaml`](BLENDER_RUNTIME_SUPPORT.yaml)
 - 主线只读与导演收束：[`AUTHORITY_GUARD.zh-CN.md`](AUTHORITY_GUARD.zh-CN.md)
 - 极简入门：[`START_HERE.md`](START_HERE.md)
 - 自动新建项目：[`NEW_PROJECT_WORKFLOW.zh-CN.md`](NEW_PROJECT_WORKFLOW.zh-CN.md)
@@ -37,7 +40,7 @@ $film-os-producer 检查项目，告诉我现在适合进入哪个部门
 2. Put the screenplay in `script/` and complete project/bible facts.
 3. Ask Codex: `运行 script-doctor，建立 Film OS 项目。` Review and approve G1.
 4. Ask: `处理 S001 到资产锁定。` Codex creates scene facts, asset requests, LIRA prompts, and TapNow asset nodes. Approve G2.
-5. Ask: `为 S001 设计并锁定镜头。` Codex creates shot cards and spatial records. Approve G3.
+5. Ask: `为 S001 设计并锁定镜头。` Codex creates shot cards and spatial records; when justified, it proposes an optional Blender whitebox test before G3. Approve G3 only after any required preview is accepted.
 6. Ask: `打包并审计 S001_SH010。` Codex builds a sealed Shot Pack, invokes ACTING/CINEDANCE at their boundaries, and requests G4.
 7. Generate in TapNow, then say: `登记 S001_SH010 take v01 的结果。` Production Supervisor records QC; approve or request a single-variable retake at G5.
 
@@ -57,6 +60,8 @@ project_template/     project-only scaffold; expanded into each new production r
 .github/              optional GitHub Pro defense-in-depth
 ```
 
+Film OS 不要求三个人使用同一种底层模型。每台电脑首次使用、切换模型或更换接入方式后，先在自己的项目聊天中运行 `$film-model-router`。系统按实际具备的读文件、写文件、工具、结构化输出和看图能力分配任务，而不是只看模型名称。模型不同不会改变权限：没有导演本地钥匙的产出始终是成员提案。
+
 母版与作品项目是两棵树：母版根目录只维护 Film OS 系统；`project_template/` 只保存新作品需要的空白项目骨架。运行 `$film-project-launcher` 时，Codex 会把 `project_template/` 展开到新的独立作品仓库根目录，因此真实项目资料不会留在母版中，也不会被母版升级覆盖。
 
 独立作品仓库展开后，才会出现下面这些项目资料路径：
@@ -66,6 +71,7 @@ PROJECT.yaml
 registry/             project-wide source-of-truth YAML
 series/               series bible, season maps, episode cards
 scenes/Sxxx/          scene card, spatial map, shot cards
+                      and optional shot-scoped Blender Previz Cards
 prompts/shot-packs/   sealed current-shot inputs/compiled prompts
 tapnow/               Canvas Manifest and Node Map
 takes/                take metadata/QC, not raw media by default

@@ -8,10 +8,13 @@ ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = [
     "AGENTS.md", "README.md", "FILM_OS_VERSION.yaml",
     "UPGRADE_GUIDE.zh-CN.md", "CHANGELOG.zh-CN.md",
+    "MODEL_POLICY.yaml", "MODEL_COMPATIBILITY.zh-CN.md",
+    "BLENDER_PREVIZ.zh-CN.md",
     "upgrade/POLICY.json", "upgrade/KNOWN_BASELINES.json",
     "templates/PROJECT.yaml",
     "templates/ASSET_REGISTRY.yaml", "templates/SCENE_CARD.yaml",
     "templates/SHOT_CARD.yaml", "templates/VERSION_LOG.yaml",
+    "templates/BLENDER_PREVIZ_CARD.yaml",
     "templates/SERIES_BIBLE.yaml", "templates/SEASON_MAP.yaml",
     "templates/EPISODE_CARD.yaml", "templates/SERIES_CONTINUITY.yaml",
     "SERIES_MODE.zh-CN.md",
@@ -25,11 +28,23 @@ REQUIRED = [
     ".github/workflows/film-os-authority-guard.yml",
     "templates/PROPOSAL_BUNDLE.yaml", "templates/MEMBER_PACKAGE.yaml",
     "templates/AUTHORITY.yaml",
+    "templates/MODEL_CAPABILITY_REPORT.yaml",
     "templates/SUBMISSIONS_README.md",
     ".agents/skills/film-project-launcher/SKILL.md",
     ".agents/skills/film-os-upgrader/SKILL.md",
     ".agents/skills/film-series-architect/SKILL.md",
     ".agents/skills/film-series-continuity/SKILL.md",
+    ".agents/skills/film-model-router/SKILL.md",
+    ".agents/skills/film-blender-previz/SKILL.md",
+    ".agents/skills/film-blender-previz/agents/openai.yaml",
+    ".agents/skills/film-master-reference/SKILL.md",
+    ".agents/skills/film-master-reference/agents/openai.yaml",
+    ".agents/skills/film-master-reference/references/chekhov.md",
+    ".agents/skills/film-master-reference/references/ozu.md",
+    ".agents/skills/film-master-reference/references/succession.md",
+    ".agents/skills/film-master-reference/references/comparison.md",
+    "tools/check_model_compatibility.py", "tools/test_model_compatibility.py",
+    "tools/check_blender_runtime.py",
     "tapnow/CANVAS_MANIFEST_SPEC.md", "tapnow/NODE_MAP_SPEC.md",
 ]
 
@@ -76,6 +91,25 @@ for skill in skill_files:
     if not text.startswith("---\n") or "\nname:" not in text[:500] or "\ndescription:" not in text[:1000]:
         errors.append(f"invalid skill frontmatter: {skill.relative_to(ROOT)}")
 
+master_reference_policy = ROOT / ".agents/skills/film-master-reference/agents/openai.yaml"
+if master_reference_policy.is_file():
+    policy_text = master_reference_policy.read_text(encoding="utf-8")
+    if not re.search(r"^\s*allow_implicit_invocation:\s*true\s*$", policy_text, re.MULTILINE):
+        errors.append("film-master-reference must recognize human natural-language triggers")
+
+master_reference_skill = ROOT / ".agents/skills/film-master-reference/SKILL.md"
+if master_reference_skill.is_file():
+    master_reference_text = master_reference_skill.read_text(encoding="utf-8")
+    required_activation_guards = [
+        "## Activation gate (mandatory)",
+        "do not read any reference file",
+        "a later human message in the same conversation",
+        "cannot supply the trigger or the confirmation",
+    ]
+    for guard in required_activation_guards:
+        if guard not in master_reference_text:
+            errors.append(f"film-master-reference activation guard missing: {guard}")
+
 for original in (ROOT / "core").glob("*/references/ORIGINAL_SKILL.md"):
     if original.stat().st_size < 1000:
         errors.append(f"core original appears truncated: {original.relative_to(ROOT)}")
@@ -93,6 +127,8 @@ if yaml:
             errors.append(f"YAML parse error {path.relative_to(ROOT)}: {exc}")
 else:
     for path in yaml_files:
+        if path.name == "openai.yaml" and path.parent.name == "agents":
+            continue
         if not re.search(r"^schema_version:\s*film-os/[^\s]+\s*$", path.read_text(encoding="utf-8"), re.M):
             errors.append(f"missing schema_version: {path.relative_to(ROOT)}")
 

@@ -8,6 +8,8 @@ An asset is `descriptor + image reference + state + lineage`; an image without a
 
 Scene Cards contain dramatic facts. ACTING owns interpretation. Shot Cards contain directorial intent and references. Shot Packs are compiled, sealed, current-shot views. TapNow manifests map execution nodes; they never replace Registry state.
 
+Blender Previz Cards are optional shot-design evidence. They bind one shot/version to a whitebox scene, camera path, proxy blocking, preview output, declared control jobs, non-inheritance rules, runtime provenance, and human review. An accepted preview may support G3 and enter the sealed Shot Pack; it never replaces the Shot Card, Spatial Map, locked visual assets, ACTING, CINEDANCE, or TapNow.
+
 Required integrity rules:
 
 - Every referenced ID resolves exactly once.
@@ -15,6 +17,7 @@ Required integrity rules:
 - Every locked entity has a human approval record.
 - Every take resolves to one released prompt and one TapNow node.
 - Every retake declares exactly one changed variable and its preserved variables.
+- Every required Blender previz resolves to one accepted current-shot Previz Card before G3; its heavy media uses a shared URI rather than one teammate's absolute path.
 - Every series scene and shot resolves to exactly one Episode Card.
 - Every approved episode updates the continuity ledger before the next episode reaches G1.
 - Every planted thread has an owner, status, first episode, and intended payoff window; a proposal is not a canonical payoff.

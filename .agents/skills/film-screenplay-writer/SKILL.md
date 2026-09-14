@@ -7,6 +7,8 @@ description: Write or revise cinematic treatments, scenes, dialogue, and screenp
 
 Read the shared overview, Creative North Star, decision record, creative brief, story bible, and current outline. Write visually playable scenes with clear action, conflict, reversals, subtext, and economical dialogue. Respect locked human intent and label any necessary invention as a proposal before treating it as canon.
 
+For scene pages or dialogue work, read [references/scene-dialogue-craft.md](references/scene-dialogue-craft.md). Apply its filmability, scene-action, subtext, voice, rhythm, and duration checks according to the chosen style. Psychological design may exist in development documents, but the screenplay page should express it through playable behavior, speech, sound, image, withholding, or a concise production-relevant direction.
+
 In series mode, write exactly the requested episode and read its Series Bible, Season Map, Episode Card, and continuity preflight. Preserve the approved opening promise, episode turn, ending hook, character knowledge, active relationships, and thread status. Do not reveal a future payoff, import knowledge a character does not yet have, or alter permanent canon. Record proposed continuity changes in the Episode Card; they become canonical only after the approved cut is closed out.
 
 The default is execution of the creator's chosen scene purpose, not autonomous rewriting. For an under-specified major creative choice, pause at a short option set or use a clearly marked placeholder; do not make a permanent choice on the creator's behalf. Preserve unusual choices instead of normalizing them into familiar formulas.

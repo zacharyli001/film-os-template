@@ -31,6 +31,17 @@ shot:
     screen_direction: ""
     eyelines: []
     blocking: []
+  blender_previz:
+    required: false
+    status: not_required
+    reason: null
+    previz_id: null
+    version: null
+    card_ref: null
+    accepted_preview_uri: null
+    reference_job: null
+    controls: []
+    non_inheritance: []
   performance:
     acting_profile_ref: null
     shot_adaptation: ""
@@ -54,6 +65,7 @@ shot:
   prompt_audit:
     status: pending
     checks: []
+    blender_previz_check: not_applicable
     auditor: null
     audited_at: null
   takes: []

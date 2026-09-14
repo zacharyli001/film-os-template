@@ -29,6 +29,7 @@ series:
     escalation_rule: ""
     reset_rule: ""
     irreversible_change_rule: ""
+    episode_area_stress_tests: []
   world_rules: []
   main_characters: []
   long_arc_threads: []

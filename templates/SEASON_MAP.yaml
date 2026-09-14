@@ -14,6 +14,9 @@ season:
   climax: ""
   character_arcs: []
   story_threads: []
+  information_release_plan: []
+  setup_payoff_windows: []
+  episode_rhythm_map: []
   episodes:
     - episode_id: SE01_E001
       order: 1

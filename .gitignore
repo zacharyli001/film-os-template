@@ -5,3 +5,6 @@ work/
 .film-os-local/
 incoming_packages/
 ~$*
+*.blend
+*.blend[0-9]*
+previz_media/

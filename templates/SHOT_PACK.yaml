@@ -9,6 +9,17 @@ sealed_shot_pack:
   location_map_slice: {}
   first_frame: ""
   blocking_and_eyelines: []
+  blender_previz_reference:
+    required: false
+    previz_id: null
+    version: null
+    preview_uri: null
+    extracted_frame_uris: []
+    reference_job: null
+    camera_and_timing_facts: {}
+    blocking_marks: []
+    controls: []
+    non_inheritance: []
   performance: ""
   camera: {}
   action_timing: []
@@ -25,4 +36,3 @@ sealed_shot_pack:
     no_cross_shot_language: false
     no_unbound_tags: false
   source_versions: {}
-

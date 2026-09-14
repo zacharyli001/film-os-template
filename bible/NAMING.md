@@ -17,6 +17,8 @@ IDs are stable ASCII; labels may use any language. Use uppercase project/scene/s
 - Prop: `@prop_SteelCylinder_clean_v01`
 - Wardrobe: `@ward_PC_Aya_uniform_v01`
 - Prompt: `S001_SH010_video_v01`
+- Blender previz: `S001_SH010_PV001_v01`
+- Blender previz camera: `S001_SH010_CAM01`
 - TapNow canvas: follow the strict Canvas ID rules below.
 - TapNow node: `TN_DEMO_S001_SH010_GEN_v01`
 
@@ -70,6 +72,7 @@ Fixed stage/type list:
 - `03场景`: reusable location assets
 - `03道具`: reusable prop assets
 - `04分镜`: scene storyboards and coverage
+- `04预演`: shot-scoped Blender whitebox, blocking, and camera-path review
 - `05镜头`: one formal production shot and its takes
 - `06返工`: controlled comparison or major rework
 - `07交付`: approved exports and delivery assembly
