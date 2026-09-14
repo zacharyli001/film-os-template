@@ -1,0 +1,10 @@
+schema_version: film-os/member-delivery-repositories/v1
+project_id: DEMO
+review_trigger:
+  phrases:
+    - 需要审批
+    - 审核成员提案
+  behavior: fetch_all_then_review_only
+default_branch: main
+proposal_branch_prefix: proposal/
+repositories: []

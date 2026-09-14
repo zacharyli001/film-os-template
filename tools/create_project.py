@@ -47,8 +47,8 @@ def generated_project_id(title: str) -> str:
 
 def validate_project_id(value: str) -> str:
     project_id = value.strip().upper()
-    if not re.fullmatch(r"[A-Z0-9]{2,8}", project_id):
-        raise ValueError("项目代号必须是2—8位大写英文字母或数字。")
+    if not re.fullmatch(r"[A-Z0-9][A-Z0-9_]{1,63}", project_id):
+        raise ValueError("项目代号必须由2—64位大写英文字母、数字和下划线组成，且不能以下划线开头。")
     return project_id
 
 
@@ -313,6 +313,12 @@ def configure_authority(target: Path, project_id: str, director_github: str) -> 
     workflow_text = workflow.read_text(encoding="utf-8")
     workflow_text = workflow_text.replace('--director "zacharyli001"', f'--director "{director_github}"')
     workflow.write_text(workflow_text, encoding="utf-8")
+
+    member_config = target / "governance/MEMBER_DELIVERY_REPOSITORIES.yaml"
+    if member_config.is_file():
+        member_text = member_config.read_text(encoding="utf-8")
+        member_text = member_text.replace("project_id: DEMO", f"project_id: {project_id}", 1)
+        member_config.write_text(member_text, encoding="utf-8")
 
 
 def initialize_git(target: Path) -> tuple[bool, str]:

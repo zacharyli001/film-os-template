@@ -23,10 +23,14 @@ REQUIRED = [
     "tools/check_authority_guard.py", "tools/check_local_authority.py",
     "tools/create_member_package.py", "tools/inspect_member_package.py",
     "tools/initialize_authority.py",
+    "tools/member_common.py", "tools/member_workspace_start.py",
+    "tools/member_workspace_finish.py", "tools/sync_member_repositories.py",
+    "tools/test_member_workspace.py", "tools/test_project_id.py",
     "AUTHORITY_GUARD.zh-CN.md",
     ".github/CODEOWNERS", ".github/pull_request_template.md",
     ".github/workflows/film-os-authority-guard.yml",
     "templates/PROPOSAL_BUNDLE.yaml", "templates/MEMBER_PACKAGE.yaml",
+    "templates/MEMBER_DELIVERY_REPOSITORIES.yaml",
     "templates/AUTHORITY.yaml",
     "templates/MODEL_CAPABILITY_REPORT.yaml",
     "templates/SUBMISSIONS_README.md",
@@ -56,6 +60,7 @@ if not (ROOT / "PROJECT.yaml").is_file():
     REQUIRED.extend([
         "project_template/README.md", "project_template/series/README.md",
         "project_template/governance/AUTHORITY.yaml",
+        "project_template/governance/MEMBER_DELIVERY_REPOSITORIES.yaml",
         "project_template/submissions/README.md",
     ])
 else:

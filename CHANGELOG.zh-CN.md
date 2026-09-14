@@ -1,5 +1,17 @@
 # Film OS 版本记录
 
+## v1.9.0 — 成员交付仓库与独立提案分支
+
+- 新增通用成员交付仓库流程：成员仓库 `main` 只做正式基线只读镜像，每次提案使用独立 `proposal/` 分支，不再把提案合并回 `main`。
+- 新增 `tools/member_workspace_start.py`、`tools/member_workspace_finish.py` 和 `tools/sync_member_repositories.py`，统一成员开工、收工和导演只读审核。
+- 收工默认只提交本地提案分支，由 GitHub Desktop 完成最终 Push；只有显式使用 `--push` 才允许脚本直接推送。
+- 导演端同步工具要求本地导演钥匙验证，只读取成员仓库的提案分支，不合并、不自动采用、不修改正式主线。
+- 成员工作会话收工后自动归档，第二次开工不再被旧会话挡住；提案目录之外的改动和未跟踪文件会被明确阻止。
+- 项目代号扩展为 2–64 位大写英文字母、数字和下划线，支持 `PUTREFACT_CARNIVAL` 这类可读代号。
+- 新增离线自动测试，覆盖成员首轮开工、连续第二轮提案、收工保护、提案分支审核和项目代号兼容。
+- 新增 `templates/MEMBER_DELIVERY_REPOSITORIES.yaml` 与 `governance/MEMBER_DELIVERY_REPOSITORIES.yaml` 项目登记模板。
+- 作品项目已有的 `project_extensions/` 成员工具不会被升级删除或改写；启用通用成员流程后，以 `tools/` 下的新入口为准。
+
 ## v1.8.1 — Blender 正式运行时整合
 
 - 固定首个实机验证通过的 Apple Silicon 组合：Blender 5.2.1 LTS、DCC-MCP Codex 插件 0.19.105、CLI/Core/Server 0.20.29、Blender Adapter 0.2.4。

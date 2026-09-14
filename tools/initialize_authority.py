@@ -18,7 +18,7 @@ GITHUB_USER = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$")
 
 def project_id_from(path: Path) -> str:
     text = path.read_text(encoding="utf-8")
-    match = re.search(r"^\s*id:\s*([A-Z0-9]{2,8})\s*$", text, re.MULTILINE)
+    match = re.search(r"^\s*id:\s*([A-Z0-9][A-Z0-9_]{1,63})\s*$", text, re.MULTILINE)
     if not match:
         raise RuntimeError("PROJECT.yaml 中找不到有效 project.id。")
     return match.group(1)
@@ -87,6 +87,15 @@ def main() -> int:
             "  local_key_sha256: null", f"  local_key_sha256: {secret_hash}", 1
         )
         authority_target.write_text(authority_text, encoding="utf-8")
+
+        member_config = target / "governance/MEMBER_DELIVERY_REPOSITORIES.yaml"
+        if not member_config.is_file():
+            member_config.parent.mkdir(parents=True, exist_ok=True)
+            member_text = (SOURCE_ROOT / "templates/MEMBER_DELIVERY_REPOSITORIES.yaml").read_text(
+                encoding="utf-8"
+            )
+            member_text = member_text.replace("project_id: DEMO", f"project_id: {project_id}", 1)
+            member_config.write_text(member_text, encoding="utf-8")
 
         key_path.parent.mkdir(parents=True, exist_ok=True)
         key_path.write_text(local_secret + "\n", encoding="utf-8")

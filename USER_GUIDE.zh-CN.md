@@ -770,6 +770,17 @@ S024_SH030 v03 — 身份和时机通过，空间尺度小 30% — 修改 locati
 执行收工检查：验证 YAML，列出今天的版本变化、审批、失败 Take、未完成节点和明天的首要阻塞。缺失的记录补入 Version Log，但不要替任何人审批。
 ```
 
+### 8.4 成员交付仓库
+
+成员使用独立交付仓库时，`main` 只作为导演正式主线的只读镜像；每次提案使用独立 `proposal/` 分支。成员开工和收工由 Codex运行：
+
+```bash
+python3 tools/member_workspace_start.py --member-id <GitHub用户名>
+python3 tools/member_workspace_finish.py --member-id <GitHub用户名>
+```
+
+收工默认只提交本地提案分支，由 GitHub Desktop 执行最终 Push。导演在带本地导演钥匙的正式工作区运行 `tools/sync_member_repositories.py`，只读列出成员提案分支；该工具不会合并、不会采用，也不会修改正式主线。
+
 ---
 
 ## 9. 常见错误与处理
