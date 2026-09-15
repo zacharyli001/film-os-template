@@ -50,6 +50,8 @@ python3 tools/sync_member_repositories.py --project <正式项目目录>
 
 首次使用 `--adopt-main` 前，成员仓库必须还没有导入正式基线；流程会先归档旧 `main`，再把它设为正式基线镜像。收工默认只提交本地提案分支，由 GitHub Desktop 执行最终 Push origin；只有显式使用 `--push` 才允许脚本直接推送。
 
+成员不需要手动管理 `main`。开工会自动获取 `origin` 和正式基线，并在本地 `main` 只是落后时自动快进；只有本地与远端分叉时才需要一次性对齐。
+
 如果成员 `main` 已经存在正式资料，但被工具判定为旧式同步提交、落后镜像或没有共同祖先，运行：
 
 ```bash

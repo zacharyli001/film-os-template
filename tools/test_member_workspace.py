@@ -155,6 +155,7 @@ class MemberWorkflowTest(unittest.TestCase):
             "--slug",
             "test-proposal",
             "--adopt-main",
+            "--push-main",
         )
         self.assertIn("ready_for_member_work", started.stdout)
         self.assertEqual(

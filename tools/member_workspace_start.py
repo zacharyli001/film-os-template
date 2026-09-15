@@ -115,7 +115,7 @@ def fetch_origin(workspace: Path, no_network: bool) -> None:
         raise RuntimeError("成员交付仓库缺少 origin/main。")
 
 
-def sync_local_main_with_origin(workspace: Path) -> str:
+def sync_local_main_with_origin(workspace: Path, allow_local_ahead: bool) -> str:
     if not branch_exists(workspace, "main"):
         return "no_local_main"
     git(workspace, "switch", "main")
@@ -135,8 +135,17 @@ def sync_local_main_with_origin(workspace: Path) -> str:
             raise RuntimeError((merged.stderr or merged.stdout).strip() or "本地 main 快进失败。")
         return "fast_forwarded_to_origin"
     if remote_ancestor:
-        return "local_ahead"
-    raise RuntimeError("本地 main 与 origin/main 已分叉；请先人工处理，流程不会覆盖差异。")
+        if allow_local_ahead:
+            return "local_ahead"
+        unpushed = git_text(workspace, "log", "--oneline", "origin/main..main")
+        raise RuntimeError(
+            "本地 main 领先 origin/main，存在未推送提交；流程不会丢弃任何内容。"
+            + (f"\n{unpushed}" if unpushed else "")
+        )
+    raise RuntimeError(
+        "本地 main 与 origin/main 已分叉。请运行 "
+        "member_workspace_start.py --realign-main 修复；流程不会自动覆盖。"
+    )
 
 
 def next_backup_tag(workspace: Path) -> str:
@@ -147,6 +156,23 @@ def next_backup_tag(workspace: Path) -> str:
         counter += 1
         candidate = f"{base}-{counter}"
     return candidate
+
+
+def release_from_ref(workspace: Path, ref: str) -> str:
+    text = git_text(workspace, "show", f"{ref}:FILM_OS_VERSION.yaml", check=False)
+    match = re.search(r'^release:\s*["\']?([^"\'\s]+)', text, re.MULTILINE)
+    return match.group(1) if match else ""
+
+
+def version_hint(workspace: Path, canonical_ref: str) -> str | None:
+    local_version = release_from_ref(workspace, "main")
+    canonical_version = release_from_ref(workspace, canonical_ref)
+    if local_version and canonical_version and local_version != canonical_version:
+        return (
+            f"提示：成员仓库 main 的 Film OS 版本为 {local_version}，"
+            f"正式基线为 {canonical_version}。若工具仍无法开工，请运行 --realign-main。"
+        )
+    return None
 
 
 def realign_main(
@@ -465,10 +491,7 @@ def main() -> int:
                 "开工前工作区必须干净；请先处理这些未提交内容：" + "、".join(dirty[:12])
             )
 
-        if args.realign_main:
-            fetch_origin(workspace, args.no_network)
-            sync_local_main_with_origin(workspace)
-
+        fetch_origin(workspace, args.no_network)
         canonical_head = fetch_canonical(
             workspace,
             canonical_url,
@@ -476,9 +499,12 @@ def main() -> int:
             args.no_network,
         )
         canonical_ref = f"canonical/{args.canonical_branch}"
-        project_id = project_id_from_ref(workspace, canonical_ref)
         realign_result: dict[str, str | bool] | None = None
         if args.realign_main:
+            sync_local_main_with_origin(workspace, allow_local_ahead=True)
+            hint = version_hint(workspace, canonical_ref)
+            if hint:
+                print(hint, file=sys.stderr)
             realign_result = realign_main(
                 workspace,
                 canonical_ref,
@@ -486,6 +512,10 @@ def main() -> int:
                 args.push_main,
             )
         else:
+            sync_local_main_with_origin(workspace, allow_local_ahead=False)
+            hint = version_hint(workspace, canonical_ref)
+            if hint:
+                print(hint, file=sys.stderr)
             ensure_mirror_main(workspace, canonical_ref, canonical_head, args.adopt_main)
             if args.push_main:
                 pushed_main = git(workspace, "push", "origin", "main", check=False)
@@ -493,6 +523,7 @@ def main() -> int:
                     raise RuntimeError(
                         (pushed_main.stderr or pushed_main.stdout).strip() or "推送正式基线镜像 main 失败。"
                     )
+        project_id = project_id_from_ref(workspace, canonical_ref)
 
         compact = utc_compact()
         slug = safe_slug(args.slug) if args.slug else member_id.lower()
@@ -547,6 +578,7 @@ def main() -> int:
                     "base_main_commit": canonical_head,
                     "canonical_url": canonical_url,
                     "realign": realign_result,
+                    "version_hint": hint,
                     "next": "只在 proposal_dir 内完成提案与衍生产出，然后运行 member_workspace_finish.py。",
                 },
                 ensure_ascii=False,

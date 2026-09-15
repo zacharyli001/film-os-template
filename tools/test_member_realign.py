@@ -113,6 +113,30 @@ class MemberRealignTest(unittest.TestCase):
             check=check,
         )
 
+    def start_normal(
+        self,
+        member: Path,
+        canonical: Path,
+        slug: str,
+        *extra: str,
+        check: bool = True,
+    ) -> subprocess.CompletedProcess[str]:
+        return self.run_command(
+            member,
+            sys.executable,
+            str(START),
+            "--workspace",
+            str(member),
+            "--member-id",
+            "MemberOne",
+            "--canonical-url",
+            str(canonical),
+            "--slug",
+            slug,
+            *extra,
+            check=check,
+        )
+
     def cleanup_proposal(self, member: Path) -> None:
         self.git(member, "switch", "main", check=False)
         proposal_root = member / "submissions/MemberOne"
@@ -215,7 +239,97 @@ class MemberRealignTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("工作区必须干净", result.stderr)
 
+    def test_auto_sync_old_style_local_to_remote_mirror(self) -> None:
+        canonical, _, _ = self.make_canonical()
+        member, _ = self.make_member()
+        self.fetch_canonical(member, canonical)
+        initial = self.git(member, "rev-parse", "main").stdout.strip()
+        old_style = self.commit_tree(member, initial, "old style sync")
+        self.git(member, "reset", "--hard", old_style)
+        self.git(member, "push", "-q", "origin", "main")
+        canonical_head = self.git(member, "rev-parse", "canonical/main").stdout.strip()
+        mirror = self.commit_tree(member, old_style, "mirror", extra_parents=[canonical_head])
+        self.git(member, "reset", "--hard", mirror)
+        self.git(member, "push", "-q", "origin", "main")
+        self.git(member, "reset", "--hard", old_style)
+        result = self.start_normal(member, canonical, "auto-old-style")
+        self.assertIn("ready_for_member_work", result.stdout)
+        self.assertEqual(
+            self.git(member, "rev-parse", "main").stdout.strip(),
+            self.git(member, "rev-parse", "origin/main").stdout.strip(),
+        )
+        self.assert_mirror(member, canonical)
+
+    def test_auto_sync_multi_generation(self) -> None:
+        canonical, work, _ = self.make_canonical()
+        member, _ = self.make_member()
+        self.fetch_canonical(member, canonical)
+        initial = self.git(member, "rev-parse", "main").stdout.strip()
+        c1 = self.git(member, "rev-parse", "canonical/main").stdout.strip()
+        m1 = self.commit_tree(member, initial, "mirror one", extra_parents=[c1])
+        self.git(member, "reset", "--hard", m1)
+        self.git(member, "push", "-q", "origin", "main")
+        self.advance_canonical(canonical, work, "canonical-two.txt")
+        self.fetch_canonical(member, canonical)
+        c2 = self.git(member, "rev-parse", "canonical/main").stdout.strip()
+        m2 = self.commit_tree(member, m1, "mirror two", extra_parents=[c2])
+        self.git(member, "reset", "--hard", m2)
+        self.git(member, "push", "-q", "origin", "main")
+        self.git(member, "reset", "--hard", m1)
+        result = self.start_normal(member, canonical, "auto-multi")
+        self.assertIn("ready_for_member_work", result.stdout)
+        self.assertEqual(
+            self.git(member, "rev-parse", "main").stdout.strip(),
+            self.git(member, "rev-parse", "origin/main").stdout.strip(),
+        )
+        self.assert_mirror(member, canonical)
+
+    def test_auto_sync_diverged_stops_with_realign_hint(self) -> None:
+        canonical, _, _ = self.make_canonical()
+        member, _ = self.make_member()
+        self.fetch_canonical(member, canonical)
+        initial = self.git(member, "rev-parse", "main").stdout.strip()
+        c1 = self.git(member, "rev-parse", "canonical/main").stdout.strip()
+        mirror = self.commit_tree(member, initial, "mirror", extra_parents=[c1])
+        self.git(member, "reset", "--hard", mirror)
+        self.git(member, "push", "-q", "origin", "main")
+        self.git(member, "reset", "--hard", initial)
+        (member / "local-only.txt").write_text("local\n", encoding="utf-8")
+        self.git(member, "add", "local-only.txt")
+        self.git(member, "commit", "-qm", "local divergent commit")
+        result = self.start_normal(member, canonical, "auto-diverged", check=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("--realign-main", result.stderr)
+
+    def test_auto_sync_local_ahead_stops_and_reports(self) -> None:
+        canonical, _, _ = self.make_canonical()
+        member, _ = self.make_member()
+        (member / "ahead.txt").write_text("ahead\n", encoding="utf-8")
+        self.git(member, "add", "ahead.txt")
+        self.git(member, "commit", "-qm", "local ahead commit")
+        result = self.start_normal(member, canonical, "auto-ahead", check=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("领先", result.stderr)
+        self.assertIn("local ahead commit", result.stderr)
+
+    def test_auto_sync_already_aligned_is_idempotent(self) -> None:
+        canonical, _, _ = self.make_canonical()
+        member, _ = self.make_member()
+        self.start(member, canonical, "baseline", "--push-main")
+        self.cleanup_proposal(member)
+        before = self.git(member, "rev-parse", "main").stdout.strip()
+        result = self.start_normal(member, canonical, "auto-idempotent")
+        self.assertIn("ready_for_member_work", result.stdout)
+        self.assertEqual(self.git(member, "rev-parse", "main").stdout.strip(), before)
+
+    def test_auto_sync_dirty_worktree_stops(self) -> None:
+        canonical, _, _ = self.make_canonical()
+        member, _ = self.make_member()
+        (member / "dirty.txt").write_text("dirty\n", encoding="utf-8")
+        result = self.start_normal(member, canonical, "auto-dirty", check=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("工作区必须干净", result.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()
-
