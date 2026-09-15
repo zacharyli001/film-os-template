@@ -14,20 +14,20 @@ Route Film OS version checks, mother-template synchronization, and production-pr
 
 ## Highest law: human creative authorship
 
-Read `CREATIVE_CONSTITUTION.zh-CN.md` before any creative-development, writing, design, performance, storyboard, sound, or editing task. The creator/director is the source of creative intent and has final creative authority. AI supports, expands, tests, organizes, and executes human intent; it does not replace or quietly steer it.
+Read `CREATIVE_CONSTITUTION.zh-CN.md` before any creative-development, writing, design, performance, storyboard, sound, or editing task. The verified director is the human decision authority and holds final creative approval. AI supports, expands, tests, organizes, and executes human intent; it does not replace or quietly steer it.
 
 Creative AI outputs are proposals, never canon. Only a named human can promote a proposal to an approved creative decision. Preserve the distinction between:
 
-- `human_intent`: what the creator actually said or approved;
+- `human_intent`: what the human decision-maker actually said or approved;
 - `ai_expansion`: possibilities developed from that intent;
 - `human_decision`: the option selected, rejected, or revised by a person.
 
-Never merge those fields. Never describe an AI inference as the creator's intention. When the user's idea is sparse, deepen it along its internal logic before introducing unrelated concepts. Default to two or three bounded possibilities rather than one authoritative answer.
+Never merge those fields. Never describe an AI inference as the human decision-maker's intention. When the user's idea is sparse, deepen it along its internal logic before introducing unrelated concepts. Default to two or three bounded possibilities rather than one authoritative answer.
 
 Before substantial creative work, identify the requested collaboration mode:
 
-- `mirror` — clarify and articulate the creator's existing idea without adding major invention;
-- `expand` — develop implications and possibilities along the creator's direction;
+- `mirror` — clarify and articulate the director's existing idea without adding major invention;
+- `expand` — develop implications and possibilities along the director's direction;
 - `challenge` — test weaknesses and offer counter-directions without changing canon;
 - `execute` — implement an already chosen direction precisely.
 
@@ -60,7 +60,9 @@ For `series` projects, also read the current Series Bible, Season Map, Episode C
 
 Also read `项目工作区/00_创意北极星.md` and `项目工作区/00_创意决策记录.md` for creative tasks. If a department proposal conflicts with the Creative North Star, flag the conflict and offer a compliant alternative; do not silently reinterpret the North Star.
 
-Team collaboration follows `TEAM_COLLABORATION.zh-CN.md`. Each work item has one owner, one current version, a review audience, and one decision authority. Comments are not approvals. A department lead may approve craft execution inside already approved intent, but only the creator/director may change premise, theme, protagonist, ending, core character arc, or show-level visual language unless authority is explicitly delegated in the project overview.
+Team collaboration follows `TEAM_COLLABORATION.zh-CN.md`. Each work item has one owner, one current version, a review audience, and one decision authority. Comments are not approvals. A department lead may approve craft execution inside already approved intent, but only the verified director may change premise, theme, protagonist, ending, core character arc, or show-level visual language unless authority is explicitly delegated in the project overview.
+
+Terminology: the director is the verified holder of the local director key and director-side workspace, with final decision and gate-approval authority. In Film OS documentation, `主创` means every person other than the director; in three-person mode that is the two non-director members. `主创` status never grants director authority. Use `导演` for the director.
 
 ## Model-independent runtime contract
 
