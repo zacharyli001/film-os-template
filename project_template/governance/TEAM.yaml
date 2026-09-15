@@ -1,0 +1,11 @@
+schema_version: film-os/team/v1
+project_id: DEMO
+setup_status: pending
+team_size: 1
+director:
+  display_name: 待补充
+  github_username: zacharyli001
+  role: 导演
+members: []
+updated_at: null
+updated_by: null

@@ -97,6 +97,17 @@ def main() -> int:
             member_text = member_text.replace("project_id: DEMO", f"project_id: {project_id}", 1)
             member_config.write_text(member_text, encoding="utf-8")
 
+        team_config = target / "governance/TEAM.yaml"
+        if not team_config.is_file():
+            team_config.parent.mkdir(parents=True, exist_ok=True)
+            team_text = (SOURCE_ROOT / "templates/TEAM.yaml").read_text(encoding="utf-8")
+            team_text = team_text.replace("project_id: DEMO", f"project_id: {project_id}", 1)
+            team_text = team_text.replace("display_name: 待补充", f"display_name: {director}", 1)
+            team_text = team_text.replace(
+                "github_username: zacharyli001", f"github_username: {director}", 1
+            )
+            team_config.write_text(team_text, encoding="utf-8")
+
         key_path.parent.mkdir(parents=True, exist_ok=True)
         key_path.write_text(local_secret + "\n", encoding="utf-8")
         key_path.chmod(0o600)

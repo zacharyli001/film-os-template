@@ -64,6 +64,8 @@ Team collaboration follows `TEAM_COLLABORATION.zh-CN.md`. Each work item has one
 
 Terminology: the director is the verified holder of the local director key and director-side workspace, with final decision and gate-approval authority. In Film OS documentation, `主创` means every person other than the director; in three-person mode that is the two non-director members. `主创` status never grants director authority. Use `导演` for the director.
 
+Every production project records its team in `governance/TEAM.yaml` and renders the human-readable roster in `项目工作区/00_团队与权限.md`. Team size, preferred names, roles, and optional delivery repositories come from that roster. Never hard-code a three-person team or use “成员 A/B/C” when the project has established preferred names. Use `$film-team-setup` or `tools/team_setup.py` to create or update the roster; only the verified director may write it.
+
 ## Model-independent runtime contract
 
 Film OS may be operated through OpenAI, DeepSeek, or another underlying model, but provider and model names never determine creative authority, repository authority, approval power, or canonical status. The client/harness and the model together form the runtime. Before a member's first task, after changing model/client, or when capability is uncertain, route to `$film-model-router`, read `MODEL_POLICY.yaml`, and verify the task profile through observable checks. A claimed or unknown capability is unsupported until verified.

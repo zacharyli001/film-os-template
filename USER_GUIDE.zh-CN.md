@@ -781,6 +781,20 @@ python3 tools/member_workspace_finish.py --member-id <GitHub用户名>
 
 收工默认只提交本地提案分支，由 GitHub Desktop 执行最终 Push。导演在带本地导演钥匙的正式工作区运行 `tools/sync_member_repositories.py`，只读列出成员提案分支；该工具不会合并、不会采用，也不会修改正式主线。
 
+### 8.5 团队初始化与称呼
+
+新建项目时，Codex 会先问导演：团队有多少人、导演怎么称呼、每位主创怎么称呼、GitHub 用户名、负责内容和是否已有交付仓库。
+
+团队名单保存在 `governance/TEAM.yaml`，并显示在 `项目工作区/00_团队与权限.md`。团队人数不固定为三人；以后所有聊天都按这份名单称呼成员，不再默认写“成员 A/B/C”。
+
+已有项目可以输入：
+
+```text
+$film-team-setup 补齐或修改团队名单
+```
+
+只有导演端可以修改正式团队名单；主创可以查看和提出建议。
+
 ---
 
 ## 9. 常见错误与处理

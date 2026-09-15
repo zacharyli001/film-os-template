@@ -1,0 +1,4 @@
+interface:
+  display_name: "团队初始化"
+  short_description: "建立或更新导演、主创、称呼与交付仓库名单"
+  default_prompt: "Use $film-team-setup to establish or update this project's team roster, names, roles, and delivery repositories."

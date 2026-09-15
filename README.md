@@ -60,7 +60,7 @@ project_template/     project-only scaffold; expanded into each new production r
 .github/              optional GitHub Pro defense-in-depth
 ```
 
-Film OS 不要求三个人使用同一种底层模型。每台电脑首次使用、切换模型或更换接入方式后，先在自己的项目聊天中运行 `$film-model-router`。系统按实际具备的读文件、写文件、工具、结构化输出和看图能力分配任务，而不是只看模型名称。模型不同不会改变权限：没有导演本地钥匙的产出始终是成员提案。
+Film OS 不要求团队成员使用同一种底层模型。每台电脑首次使用、切换模型或更换接入方式后，先在自己的项目聊天中运行 `$film-model-router`。系统按实际具备的读文件、写文件、工具、结构化输出和看图能力分配任务，而不是只看模型名称。模型不同不会改变权限：没有导演本地钥匙的产出始终是成员提案。
 
 母版与作品项目是两棵树：母版根目录只维护 Film OS 系统；`project_template/` 只保存新作品需要的空白项目骨架。运行 `$film-project-launcher` 时，Codex 会把 `project_template/` 展开到新的独立作品仓库根目录，因此真实项目资料不会留在母版中，也不会被母版升级覆盖。
 

@@ -14,6 +14,12 @@
 $film-project-launcher 新建剧集项目：项目名称，并建立私有 GitHub 仓库
 ```
 
+已有项目修改团队称呼或分工：
+
+```text
+$film-team-setup 补齐或修改团队名单
+```
+
 连载剧集再加三句：
 
 ```text

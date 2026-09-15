@@ -337,6 +337,28 @@ def initialize_git(target: Path) -> tuple[bool, str]:
         return False, f"project created; Git commit needs Codex follow-up: {exc}"
 
 
+def initialize_team(target: Path, args: argparse.Namespace) -> dict:
+    director_name = args.director_name or args.director_github
+    command = [
+        sys.executable,
+        str(target / "tools/team_setup.py"),
+        "--project",
+        str(target),
+        "--director-name",
+        director_name,
+        "--director-github",
+        args.director_github,
+    ]
+    if args.expected_size is not None:
+        command.extend(["--expected-size", str(args.expected_size)])
+    for member in args.member:
+        command.extend(["--member", member])
+    result = subprocess.run(command, cwd=target, text=True, capture_output=True, check=False)
+    if result.returncode != 0:
+        raise RuntimeError((result.stderr or result.stdout).strip() or "团队初始化失败。")
+    return json.loads(result.stdout)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Create a Film OS production project from the master template.")
     parser.add_argument("--title", required=True, help="Human-readable project title")
@@ -352,6 +374,14 @@ def parse_args() -> argparse.Namespace:
         default="zacharyli001",
         help="GitHub username with exclusive canonical promotion authority",
     )
+    parser.add_argument("--director-name", help="How the director should be addressed")
+    parser.add_argument(
+        "--member",
+        action="append",
+        default=[],
+        help="主创格式：显示名称|GitHub用户名|负责内容|交付仓库地址（后两项可省略）",
+    )
+    parser.add_argument("--expected-size", type=int, help="Team size including the director")
     parser.add_argument("--no-git", action="store_true", help="Skip local Git initialization")
     return parser.parse_args()
 
@@ -405,6 +435,7 @@ def main() -> int:
                 series_ledger.unlink()
         update_overview(target, title, args.production_type)
         configure_authority(target, project_id, args.director_github)
+        team_result = initialize_team(target, args)
         initialize_installation(target)
         git_ok, git_note = (False, "Git initialization skipped") if args.no_git else initialize_git(target)
         result = {
@@ -416,6 +447,8 @@ def main() -> int:
             "git_initialized": git_ok,
             "git_note": git_note,
             "github_remote": None,
+            "team_size": team_result.get("team_size"),
+            "team_setup_status": team_result.get("setup_status"),
         }
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
