@@ -4,6 +4,8 @@ from pathlib import Path
 import re
 import sys
 
+from yaml_checks import demo_project_id_files, parse_all_yaml
+
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = [
     "AGENTS.md", "README.md", "FILM_OS_VERSION.yaml",
@@ -27,6 +29,7 @@ REQUIRED = [
     "tools/member_workspace_finish.py", "tools/sync_member_repositories.py",
     "tools/test_member_workspace.py", "tools/test_project_id.py",
     "tools/team_setup.py", "tools/test_team_setup.py",
+    "tools/yaml_checks.py", "tools/test_yaml_checks.py",
     "AUTHORITY_GUARD.zh-CN.md",
     ".github/CODEOWNERS", ".github/pull_request_template.md",
     ".github/workflows/film-os-authority-guard.yml",
@@ -125,22 +128,19 @@ for original in (ROOT / "core").glob("*/references/ORIGINAL_SKILL.md"):
         errors.append(f"core original appears truncated: {original.relative_to(ROOT)}")
 
 yaml_files = list(ROOT.rglob("*.yaml"))
-try:
-    import yaml
-except ImportError:
-    yaml = None
-if yaml:
-    for path in yaml_files:
-        try:
-            yaml.safe_load(path.read_text(encoding="utf-8"))
-        except Exception as exc:
-            errors.append(f"YAML parse error {path.relative_to(ROOT)}: {exc}")
-else:
-    for path in yaml_files:
-        if path.name == "openai.yaml" and path.parent.name == "agents":
-            continue
-        if not re.search(r"^schema_version:\s*film-os/[^\s]+\s*$", path.read_text(encoding="utf-8"), re.M):
-            errors.append(f"missing schema_version: {path.relative_to(ROOT)}")
+yaml_errors, yaml_parser = parse_all_yaml(ROOT, yaml_files)
+errors.extend(yaml_errors)
+if yaml_parser == "minimal":
+    print("WARNING: no real YAML parser available; YAML parsing was limited to a minimal structure check.")
+
+if (ROOT / "PROJECT.yaml").is_file():
+    production_yaml_files = [
+        path
+        for path in yaml_files
+        if "templates" not in path.relative_to(ROOT).parts
+    ]
+    for relative in demo_project_id_files(ROOT, production_yaml_files):
+        errors.append(f"production project contains unresolved project_id: DEMO in {relative}")
 
 if errors:
     print("Film OS validation FAILED")

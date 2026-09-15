@@ -41,4 +41,4 @@ known_compatibility:
     status: workaround_verified
 fallback:
   controller: codex-blender
-  use_only_when_preferred_stack_is_unavailable
+  use_only_when_preferred_stack_is_unavailable: true

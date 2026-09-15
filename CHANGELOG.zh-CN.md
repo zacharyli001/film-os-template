@@ -1,5 +1,13 @@
 # Film OS 版本记录
 
+## v1.10.1 — YAML 校验与示例场景修正
+
+- 修复 `BLENDER_RUNTIME_SUPPORT.yaml` 中 `fallback.use_only_when_preferred_stack_is_unavailable` 缺少冒号和值的问题，明确为 `true`。
+- 母版校验现在优先使用真实 YAML 解析器（PyYAML 或 Ruby YAML）；两者都不可用时明确提示未做真实解析，并执行最小结构检查。
+- 移除 `project_template/scenes/` 中三份带 `project_id: DEMO` 的示例场景文件，只保留场景目录说明。
+- `tools/validate_repo.py` 现在会拦住作品项目中残留的 `project_id: DEMO`。
+- 新增离线 YAML 检查测试，覆盖裸文本语法错误和 DEMO 项目代号检测。
+
 ## v1.10.0 — 团队初始化与称呼配置
 
 - 新增通用团队初始化流程：新建项目时先询问导演称呼、团队总人数、每位主创称呼、GitHub 用户名、负责内容和可选交付仓库。
