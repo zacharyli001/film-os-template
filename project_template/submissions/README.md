@@ -4,6 +4,8 @@
 
 免费 GitHub 模式下，成员不拥有导演正式仓库写权限。推荐使用成员交付仓库模式：成员仓库的 `main` 只做正式基线镜像，每次提案使用独立 `proposal/` 分支。也可以退回完整成员包模式：由 Codex 导出一个包含 `00_正式基线只读/` 和 `01_个人增量/` 的完整包。无论哪种方式，成员内容都默认是 `non_canonical_proposal`。
 
+如果成员 `main` 被工具判定为旧式同步提交、落后镜像或没有共同祖先，运行 `python3 tools/member_workspace_start.py --member-id <GitHub用户名> --realign-main --push-main` 完成一次性对齐；该流程不会删除历史或提案分支。
+
 ## 一个想法对应一个提案包
 
 ```text

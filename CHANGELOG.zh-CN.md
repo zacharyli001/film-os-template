@@ -1,5 +1,15 @@
 # Film OS 版本记录
 
+## v1.10.2 — 成员 main 一次性对齐入口
+
+- 新增 `member_workspace_start.py --realign-main`，用于修复旧式同步提交、落后镜像和与正式库没有共同祖先的成员 `main`。
+- 对齐前先把旧 `main` 备份为 `archive/member-main-before-mirror-<UTC>` 标签并推送到成员自己的 origin。
+- 新镜像提交同时连接旧 `main` 与正式基线父提交，保留全部历史和提案分支。
+- 本地 `main` 落后于 `origin/main` 时先安全快进；两者分叉、工作区不干净或备份推送失败时停下。
+- 默认只更新本地，显式 `--push-main` 才用 `push --force-with-lease` 更新成员自己的 origin。
+- `--adopt-main` 继续保留，但只适用于尚未导入正式基线的空成员仓库。
+- 新增六个离线测试，覆盖落后镜像、旧式同步、无共同祖先、已对齐幂等、落后于远端和脏工作区。
+
 ## v1.10.1 — YAML 校验与示例场景修正
 
 - 修复 `BLENDER_RUNTIME_SUPPORT.yaml` 中 `fallback.use_only_when_preferred_stack_is_unavailable` 缺少冒号和值的问题，明确为 `true`。

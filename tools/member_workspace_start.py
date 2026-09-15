@@ -45,7 +45,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--adopt-main",
         action="store_true",
-        help="仅用于尚未导入正式基线的空成员仓库：先归档旧 main，再把 main 设为正式基线镜像。",
+        help="仅用于 main 尚未包含 PROJECT.yaml 的空成员仓库：先归档旧 main，再把 main 设为正式基线镜像。",
+    )
+    parser.add_argument(
+        "--realign-main",
+        action="store_true",
+        help="一次性修复旧式同步提交、落后镜像或无共同祖先的成员 main，不删除历史和提案分支。",
     )
     parser.add_argument("--push-main", action="store_true", help="完成 main 镜像后立即推送到成员自己的 origin。")
     return parser.parse_args()
@@ -96,6 +101,137 @@ def fetch_canonical(workspace: Path, canonical_url: str, branch: str, no_network
     if not commit_exists(workspace, ref):
         raise RuntimeError("没有可用的正式基线引用；请去掉 --no-network 后重试。")
     return git_text(workspace, "rev-parse", f"{ref}^{{commit}}")
+
+
+def fetch_origin(workspace: Path, no_network: bool) -> None:
+    if no_network:
+        if not commit_exists(workspace, "origin/main"):
+            raise RuntimeError("没有可用的 origin/main 引用；请去掉 --no-network 后重试。")
+        return
+    fetched = git(workspace, "fetch", "--prune", "--tags", "origin", check=False)
+    if fetched.returncode != 0:
+        raise RuntimeError((fetched.stderr or fetched.stdout).strip() or "同步成员交付仓库失败。")
+    if not commit_exists(workspace, "origin/main"):
+        raise RuntimeError("成员交付仓库缺少 origin/main。")
+
+
+def sync_local_main_with_origin(workspace: Path) -> str:
+    if not branch_exists(workspace, "main"):
+        return "no_local_main"
+    git(workspace, "switch", "main")
+    local = git_text(workspace, "rev-parse", "main")
+    remote = git_text(workspace, "rev-parse", "origin/main")
+    if local == remote:
+        return "already_synced"
+    local_ancestor = git(
+        workspace, "merge-base", "--is-ancestor", local, "origin/main", check=False
+    ).returncode == 0
+    remote_ancestor = git(
+        workspace, "merge-base", "--is-ancestor", "origin/main", local, check=False
+    ).returncode == 0
+    if local_ancestor:
+        merged = git(workspace, "merge", "--ff-only", "origin/main", check=False)
+        if merged.returncode != 0:
+            raise RuntimeError((merged.stderr or merged.stdout).strip() or "本地 main 快进失败。")
+        return "fast_forwarded_to_origin"
+    if remote_ancestor:
+        return "local_ahead"
+    raise RuntimeError("本地 main 与 origin/main 已分叉；请先人工处理，流程不会覆盖差异。")
+
+
+def next_backup_tag(workspace: Path) -> str:
+    base = f"archive/member-main-before-mirror-{utc_compact()}"
+    candidate = base
+    counter = 1
+    while git(workspace, "rev-parse", "--verify", f"refs/tags/{candidate}", check=False).returncode == 0:
+        counter += 1
+        candidate = f"{base}-{counter}"
+    return candidate
+
+
+def realign_main(
+    workspace: Path,
+    canonical_ref: str,
+    canonical_head: str,
+    push_main: bool,
+) -> dict[str, str | bool]:
+    if not branch_exists(workspace, "main"):
+        git(workspace, "switch", "-C", "main", canonical_ref)
+        pushed = False
+        if push_main:
+            result = git(workspace, "push", "--force-with-lease", "origin", "main", check=False)
+            if result.returncode != 0:
+                raise RuntimeError((result.stderr or result.stdout).strip() or "推送 main 失败。")
+            pushed = True
+        return {"action": "created", "pushed": pushed}
+
+    git(workspace, "switch", "main")
+    main_head = git_text(workspace, "rev-parse", "main")
+    if main_head == canonical_head:
+        return {"action": "already_exact", "pushed": False}
+    main_tree = git_text(workspace, "rev-parse", "main^{tree}")
+    canonical_tree = git_text(workspace, "rev-parse", f"{canonical_ref}^{{tree}}")
+    if main_tree == canonical_tree:
+        return {"action": "already_mirror", "pushed": False}
+
+    ancestor = git(
+        workspace, "merge-base", "--is-ancestor", main_head, canonical_ref, check=False
+    ).returncode == 0
+    if ancestor:
+        merged = git(workspace, "merge", "--ff-only", canonical_ref, check=False)
+        if merged.returncode != 0:
+            raise RuntimeError((merged.stderr or merged.stdout).strip() or "main 快进到正式基线失败。")
+        pushed = False
+        if push_main:
+            result = git(workspace, "push", "--force-with-lease", "origin", "main", check=False)
+            if result.returncode != 0:
+                raise RuntimeError((result.stderr or result.stdout).strip() or "推送 main 失败。")
+            pushed = True
+        return {"action": "fast_forwarded", "pushed": pushed}
+
+    tag = next_backup_tag(workspace)
+    git(
+        workspace,
+        "tag",
+        "-a",
+        "-m",
+        "成员 main 对齐正式基线镜像前的完整备份",
+        tag,
+        "main",
+    )
+    pushed_tag = git(workspace, "push", "origin", f"refs/tags/{tag}", check=False)
+    if pushed_tag.returncode != 0:
+        raise RuntimeError(
+            (pushed_tag.stderr or pushed_tag.stdout).strip()
+            or "备份标签推送失败；为避免无远程备份，main 未改写。"
+        )
+    mirror_commit = git_text(
+        workspace,
+        "commit-tree",
+        canonical_tree,
+        "-p",
+        "main",
+        "-p",
+        canonical_ref,
+        "-m",
+        "chore: realign member main to canonical baseline",
+    )
+    git(workspace, "reset", "--hard", mirror_commit)
+    pushed = False
+    if push_main:
+        pushed_main = git(workspace, "push", "--force-with-lease", "origin", "main", check=False)
+        if pushed_main.returncode != 0:
+            raise RuntimeError(
+                (pushed_main.stderr or pushed_main.stdout).strip()
+                or "main 镜像已在本机建立，但推送失败；远程未被覆盖。"
+            )
+        pushed = True
+    return {
+        "action": "mirror_rebuilt",
+        "backup_tag": tag,
+        "mirror_commit": mirror_commit,
+        "pushed": pushed,
+    }
 
 
 def ensure_mirror_main(
@@ -160,7 +296,8 @@ def ensure_mirror_main(
             has_project = git(workspace, "cat-file", "-e", "main:PROJECT.yaml", check=False).returncode == 0
             if has_project:
                 raise RuntimeError(
-                    "成员 main 已包含正式项目资料，不能自动替换；请先运行一次性迁移/整理流程。"
+                    "成员 main 已包含正式项目资料；请改用 --realign-main 修复，"
+                    "不要使用 --adopt-main。"
                 )
             tag = f"archive/member-main-before-adopt-{utc_compact()}"
             git(
@@ -196,11 +333,14 @@ def ensure_mirror_main(
         if canonical_is_ancestor:
             raise RuntimeError(
                 "成员 main 已接入正式历史，但工作内容仍不是正式基线镜像；"
-                "请运行一次性整理流程后再开工。"
+                "请运行 python3 tools/member_workspace_start.py "
+                "--workspace <成员仓库> --member-id <成员ID> --realign-main 修复后再开工。"
             )
         raise RuntimeError(
-            "成员仓库 main 不是正式基线的干净镜像。请先运行一次性迁移/整理流程，"
-            "或在尚未导入正式基线的空成员仓库中明确使用 --adopt-main。"
+            "成员仓库 main 不是正式基线的干净镜像。请运行 "
+            "python3 tools/member_workspace_start.py --workspace <成员仓库> "
+            "--member-id <成员ID> --realign-main 修复；"
+            "--adopt-main 只适用于尚未导入正式基线的空成员仓库。"
         )
     git(workspace, "switch", "main")
     merged = git(workspace, "merge", "--ff-only", canonical_ref, check=False)
@@ -325,6 +465,10 @@ def main() -> int:
                 "开工前工作区必须干净；请先处理这些未提交内容：" + "、".join(dirty[:12])
             )
 
+        if args.realign_main:
+            fetch_origin(workspace, args.no_network)
+            sync_local_main_with_origin(workspace)
+
         canonical_head = fetch_canonical(
             workspace,
             canonical_url,
@@ -333,13 +477,22 @@ def main() -> int:
         )
         canonical_ref = f"canonical/{args.canonical_branch}"
         project_id = project_id_from_ref(workspace, canonical_ref)
-        ensure_mirror_main(workspace, canonical_ref, canonical_head, args.adopt_main)
-        if args.push_main:
-            pushed_main = git(workspace, "push", "origin", "main", check=False)
-            if pushed_main.returncode != 0:
-                raise RuntimeError(
-                    (pushed_main.stderr or pushed_main.stdout).strip() or "推送正式基线镜像 main 失败。"
-                )
+        realign_result: dict[str, str | bool] | None = None
+        if args.realign_main:
+            realign_result = realign_main(
+                workspace,
+                canonical_ref,
+                canonical_head,
+                args.push_main,
+            )
+        else:
+            ensure_mirror_main(workspace, canonical_ref, canonical_head, args.adopt_main)
+            if args.push_main:
+                pushed_main = git(workspace, "push", "origin", "main", check=False)
+                if pushed_main.returncode != 0:
+                    raise RuntimeError(
+                        (pushed_main.stderr or pushed_main.stdout).strip() or "推送正式基线镜像 main 失败。"
+                    )
 
         compact = utc_compact()
         slug = safe_slug(args.slug) if args.slug else member_id.lower()
@@ -393,6 +546,7 @@ def main() -> int:
                     "proposal_dir": str(bundle.relative_to(workspace)),
                     "base_main_commit": canonical_head,
                     "canonical_url": canonical_url,
+                    "realign": realign_result,
                     "next": "只在 proposal_dir 内完成提案与衍生产出，然后运行 member_workspace_finish.py。",
                 },
                 ensure_ascii=False,

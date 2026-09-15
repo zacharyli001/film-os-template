@@ -55,6 +55,17 @@ python3 tools/member_workspace_start.py \
 
 `main` 之后只作为正式基线只读镜像；每次新提案都会建立独立分支。
 
+如果工具提示 `main` 是旧式同步提交、落后镜像或与正式库没有共同祖先，不要手工改 Git。运行：
+
+```bash
+python3 tools/member_workspace_start.py \
+  --member-id <GitHub用户名> \
+  --realign-main \
+  --push-main
+```
+
+入口会先备份旧 `main` 到成员仓库的归档标签，再建立同时连接旧历史和正式基线的镜像提交；不会删除历史或提案分支。
+
 5. 在 Codex 中添加这个本地项目文件夹，并设为主要文件夹。
 6. 新开聊天，输入：
 
