@@ -1,5 +1,15 @@
 # Film OS 版本记录
 
+## v1.11.0 — 提案审核词表：已阅不等于采纳
+
+- 明确区分两件事：**提案审核**（成员能不能继续做）与**闸门批准**（内容算不算正式）。此前两者只能共用一个“批”字，导致“已阅放行”无处可记。
+- 提案包新增 `director_decision.promoted_to_canon`；`director_decision.status` 明确为六个取值：`pending`、`continue`、`needs_input`、`hold`、`adopted`、`rejected`。
+- `continue`（已阅，继续探索）是完整有效的决定，不是未完成的批准；它不解锁任何闸门、不允许写入正式目录、不使提案或其衍生成果成为正式内容。
+- 新增成员模板 `02_团队审核/提案审核单模板.md`，把五种处理结果固定成可勾选项，审核记录不再需要临时措辞。
+- `AGENTS.md`、`TEAM_COLLABORATION.zh-CN.md`、`bible/GATES_AND_QC.md` 同步这条规则，并在“五道闸门”一节注明提案状态永远不等于闸门状态。
+- `check_authority_guard.py` 增加机器校验：`director_decision.status` 必须属于六个合法取值（写 `approved` 直接拒绝）；非 `adopted` 的提案不能标记 `promoted_to_canon: true`；成员不能在自己的提案包里自行记录采纳。新增四个测试用例覆盖上述规则。
+- 修复权限守卫的一个既有缺陷：Git 默认会把中文文件名转义成八进制（`core.quotePath`），导致提案包里只要出现中文文件名，守卫就会误报“内容不在提案包内”而拒绝整个 PR。现在守卫以字面路径读取，中文文件名可正常通过，并新增对应测试。
+
 ## v1.10.3 — 成员开工自动同步 main
 
 - 成员开工现在会自动获取 `origin` 和正式基线，成员不再需要手动管理 `main`。

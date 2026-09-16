@@ -4,6 +4,10 @@ At each gate the owner reviews the named deliverable, records `approved`, `rejec
 
 In series mode, the same five gate types repeat with an explicit scope. A Series Bible/Season Map may use G1 at `SERIES01` or `SE01`; each episode uses G1–G5 at `SE01_E001`; shot releases and take approvals also record the full shot scope. Before episode G1, continuity preflight must be current. After episode G5, continuity closeout must finish before the next episode locks.
 
+## Proposal review is not a gate
+
+`director_decision.status` on a proposal records whether a member may keep working on that proposal line. It is not a gate and never satisfies one. `continue` means seen, keep exploring, nothing accepted; it does not unlock downstream state, does not permit writing outside the proposal bundle, and does not make anything canonical. Only a gate recorded as `approved` unlocks downstream state, and only the director creates the canonical version that `adopted` requires.
+
 ## Prompt Audit checklist
 
 1. Schema/version and all IDs resolve.

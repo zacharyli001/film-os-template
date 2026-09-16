@@ -13,6 +13,14 @@ import sys
 UTC_ID = re.compile(r"^\d{8}T\d{6}Z_[a-z0-9][a-z0-9-]*$")
 UTC_TIME = re.compile(r"^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z$")
 GITHUB_USER = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$")
+DIRECTOR_DECISION_STATES = (
+    "pending",
+    "continue",
+    "needs_input",
+    "hold",
+    "adopted",
+    "rejected",
+)
 
 
 def git(root: Path, *args: str) -> str:
@@ -29,6 +37,32 @@ def scalar_fields(path: Path) -> dict[str, str]:
         if not raw_line or raw_line[0].isspace() or raw_line.lstrip().startswith("#"):
             continue
         match = re.match(r"^([a-z_]+):\s*(.*?)\s*$", raw_line)
+        if not match:
+            continue
+        value = match.group(2)
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {'"', "'"}:
+            value = value[1:-1]
+        result[match.group(1)] = value
+    return result
+
+
+def nested_scalar_fields(path: Path, block: str) -> dict[str, str]:
+    """Read the immediate scalar children of one top-level YAML block."""
+    result: dict[str, str] = {}
+    inside = False
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        if not inside:
+            if raw_line.rstrip() == f"{block}:":
+                inside = True
+            continue
+        if not raw_line.strip() or raw_line.lstrip().startswith("#"):
+            continue
+        indent = len(raw_line) - len(raw_line.lstrip(" "))
+        if indent < 2:
+            break
+        if indent > 2:
+            continue
+        match = re.match(r"^\s{2}([a-z_]+):\s*(.*?)\s*$", raw_line)
         if not match:
             continue
         value = match.group(2)
@@ -76,7 +110,18 @@ def main() -> int:
         errors.append(f"成员分支必须以 {expected_prefix} 开头。")
 
     try:
-        changed = git(root, "diff", "--name-status", "--no-renames", args.base, args.head)
+        # core.quotePath=false keeps non-ASCII paths literal; otherwise Git
+        # quotes and octal-escapes Chinese filenames and the prefix checks fail.
+        changed = git(
+            root,
+            "-c",
+            "core.quotePath=false",
+            "diff",
+            "--name-status",
+            "--no-renames",
+            args.base,
+            args.head,
+        )
     except (subprocess.CalledProcessError, FileNotFoundError) as exc:
         return fail([f"无法读取 Git 变更：{exc}"])
 
@@ -127,6 +172,28 @@ def main() -> int:
         for key, value in expected.items():
             if fields.get(key) and fields[key].casefold() != value.casefold():
                 errors.append(f"{manifest_rel} 的 {key} 必须是 {value}。")
+
+        decision = nested_scalar_fields(manifest, "director_decision")
+        decision_status = decision.get("status", "")
+        promoted = decision.get("promoted_to_canon", "")
+        if decision_status and decision_status not in DIRECTOR_DECISION_STATES:
+            errors.append(
+                f"{manifest_rel} 的 director_decision.status 必须是 "
+                f"{'、'.join(DIRECTOR_DECISION_STATES)} 之一；"
+                "提案审核不是闸门批准，不能用 approved。"
+            )
+        if promoted and promoted.casefold() not in {"true", "false"}:
+            errors.append(f"{manifest_rel} 的 promoted_to_canon 必须是 true 或 false。")
+        if promoted.casefold() == "true" and decision_status != "adopted":
+            errors.append(
+                f"{manifest_rel} 在 director_decision.status 不是 adopted 时"
+                "不能标记 promoted_to_canon: true。"
+            )
+        if decision_status == "adopted":
+            errors.append(
+                f"{manifest_rel} 不能自行记录 adopted：采纳只能由导演在正式主线中"
+                "选择内容并建立新版本，提案分支本身永远不是正式内容。"
+            )
 
         created = fields.get("created_at", "")
         time_match = UTC_TIME.fullmatch(created)

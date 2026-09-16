@@ -18,7 +18,10 @@ model_runtime:
   capability_report: MODEL_RUNTIME.yaml
   capability_report_status: unverified
 director_decision:
+  # pending | continue | needs_input | hold | adopted | rejected
+  # continue = 已阅，放行继续探索；不解锁闸门，不进入正式主线。
   status: pending
+  promoted_to_canon: false
   decided_by: null
   decided_at: null
   notes: null

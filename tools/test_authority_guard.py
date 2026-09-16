@@ -98,6 +98,66 @@ class AuthorityGuardTests(unittest.TestCase):
         result = self.run_guard(head)
         self.assertEqual(result.returncode, 0, result.stderr)
 
+    def add_proposal_with_decision(self, decision_lines: list[str]) -> str:
+        command(self.root, "git", "switch", "-c", self.branch)
+        self.proposal_root.mkdir(parents=True)
+        (self.proposal_root / "PROPOSAL.yaml").write_text(
+            "\n".join(
+                [
+                    "schema_version: film-os/proposal/v1",
+                    f"proposal_id: {PROPOSAL_ID}",
+                    f"author_github: {ACTOR}",
+                    'created_at: "2026-09-13T12:00:00Z"',
+                    f"base_main_commit: {self.base}",
+                    "status: proposed",
+                    "director_decision:",
+                    *decision_lines,
+                    "",
+                ]
+            ),
+            encoding="utf-8",
+        )
+        (self.proposal_root / "01_剧本增量提案.md").write_text(
+            "非正式提案\n", encoding="utf-8"
+        )
+        command(self.root, "git", "add", ".")
+        command(self.root, "git", "commit", "-m", "member proposal")
+        return command(self.root, "git", "rev-parse", "HEAD")
+
+    def test_continue_decision_is_accepted(self) -> None:
+        head = self.add_proposal_with_decision(
+            ["  status: continue", "  promoted_to_canon: false"]
+        )
+        result = self.run_guard(head)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_continue_decision_cannot_be_promoted(self) -> None:
+        head = self.add_proposal_with_decision(
+            ["  status: continue", "  promoted_to_canon: true"]
+        )
+        result = self.run_guard(head)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("promoted_to_canon", result.stderr)
+
+    def test_member_cannot_record_adoption(self) -> None:
+        head = self.add_proposal_with_decision(
+            ["  status: adopted", "  promoted_to_canon: true"]
+        )
+        result = self.run_guard(head)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("不能自行记录 adopted", result.stderr)
+
+    def test_decision_status_must_not_be_approved(self) -> None:
+        head = self.add_proposal_with_decision(["  status: approved"])
+        result = self.run_guard(head)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("director_decision.status", result.stderr)
+
+    def test_proposal_file_may_use_chinese_name(self) -> None:
+        head = self.add_valid_proposal("01_剧本增量提案.md")
+        result = self.run_guard(head)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
     def test_member_modifying_canonical_script_fails(self) -> None:
         command(self.root, "git", "switch", "-c", self.branch)
         (self.root / "正式剧本.md").write_text("成员覆盖版本\n", encoding="utf-8")

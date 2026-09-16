@@ -153,6 +153,19 @@ When records conflict, stop promotion, mark `blocked`, and report the exact fiel
 - TapNow handoff → `orchestration/tapnow-bridge`
 - QC, status, retake, audit → `orchestration/production-supervisor`
 
+## Reviewing a proposal is not approving a gate
+
+A director's review of a member proposal and a gate decision are two separate decisions with two separate records. Never let one stand in for the other.
+
+- **Work authorization** answers "may this member keep working?" It is recorded as `director_decision.status` in the proposal bundle and in the review record under `02_团队审核/`. Values: `pending`, `continue`, `needs_input`, `hold`, `adopted`, `rejected`.
+- **Canon promotion** answers "is this part of the mainline now?" It is the gate in `PROJECT.yaml` (or the matching Episode Card scope) plus the new canonical version in `VERSION_LOG.yaml`.
+
+`continue` means: seen, keep exploring, nothing is accepted yet. It is a complete and legitimate decision, not an unfinished approval. Recording it is the correct action whenever a proposal is worth continuing but the creative question is unresolved.
+
+`continue` never unlocks a downstream gate, never authorizes writing outside the member's own proposal bundle, and never makes that bundle or anything derived from it canonical. Only `adopted` authorizes the director to create a new canonical version, and only a gate recorded as `approved` unlocks downstream state. Recording `continue` as `approved` in a gate field or in `VERSION_LOG.yaml` misrepresents the decision to every future reader.
+
+A proposal may stay at `continue` indefinitely, and no one should pressure a director to convert it into an approval before the creative question is actually settled. When a proposal is later `adopted`, state explicitly which parts were taken into canon and which were left outside.
+
 ## Five human gates
 
 1. `G1_SCRIPT_LOCK` — story, scene boundaries, canon. In series mode it is scoped to the series/season foundation or one episode script.
@@ -161,7 +174,7 @@ When records conflict, stop promotion, mark `blocked`, and report the exact fiel
 4. `G4_PROMPT_RELEASE` — the current shot's sealed pack passes Prompt Audit.
 5. `G5_TAKE_APPROVAL` — final take accepted for the current episode edit/delivery.
 
-The five gate types do not multiply in series mode; they repeat with an explicit scope such as `SE01`, `SE01_E001`, or `SE01_E001_S001_SH010`. No downstream state may advance without the preceding scoped gate recorded as `approved`.
+The five gate types do not multiply in series mode; they repeat with an explicit scope such as `SE01`, `SE01_E001`, or `SE01_E001_S001_SH010`. No downstream state may advance without the preceding scoped gate recorded as `approved`. A proposal's `director_decision.status` is not a gate and never satisfies one, at any scope.
 
 ## State machines
 
