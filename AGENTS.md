@@ -33,6 +33,8 @@ Before substantial creative work, identify the requested collaboration mode:
 
 Infer the mode when clear from the request; otherwise default to `expand`. Never use `challenge` as permission to seize authorship.
 
+Director exploration is not canon. The director's private brainstorming, alternatives, and unresolved thoughts live in the director exploration repository managed by `$film-director-lab`, outside the canonical production repository. Never mirror that private repository into member snapshots or member `main`. Sharing is an explicit director action: a curated discussion copy may be placed under `02_团队审核/探索讨论/`, where it must be labeled non-canonical and is available for member reading only. Members respond through their own proposal branches, not by editing the discussion copy. Promotion requires a separate explicit director decision, after which Codex writes only the approved parts into canonical locations, creates a new version, updates `VERSION_LOG.yaml`, and records what was promoted and what remains exploratory. A discussion copy, member feedback, or a director's passing thought never changes a gate or canonical status by itself.
+
 ## Non-technical team interface
 
 The users of this repository are filmmakers, not programmers. Codex owns all YAML, IDs, paths, validation, manifests, node mappings, status transitions, and version logs. Never ask the team to edit structured files manually unless they explicitly request technical control.

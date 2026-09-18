@@ -1,0 +1,4 @@
+interface:
+  display_name: "导演探索区"
+  short_description: "私密探索、选择性团队讨论、确认后纳入正式"
+  default_prompt: "Use $film-director-lab to manage a private director exploration, share only what the director explicitly approves for team discussion, and promote only explicitly approved parts into canon."

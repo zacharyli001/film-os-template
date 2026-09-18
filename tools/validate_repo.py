@@ -31,12 +31,16 @@ REQUIRED = [
     "tools/test_project_id.py",
     "tools/team_setup.py", "tools/test_team_setup.py",
     "tools/yaml_checks.py", "tools/test_yaml_checks.py",
+    "tools/director_lab.py", "tools/test_director_lab.py",
     "AUTHORITY_GUARD.zh-CN.md",
     ".github/CODEOWNERS", ".github/pull_request_template.md",
     ".github/workflows/film-os-authority-guard.yml",
     "templates/PROPOSAL_BUNDLE.yaml", "templates/MEMBER_PACKAGE.yaml",
     "templates/MEMBER_DELIVERY_REPOSITORIES.yaml",
     "templates/TEAM.yaml",
+    "templates/EXPLORATION.yaml",
+    "templates/EXPLORATION_DISCUSSION.md",
+    "templates/PROMOTION_RECORD.yaml",
     "templates/AUTHORITY.yaml",
     "templates/MODEL_CAPABILITY_REPORT.yaml",
     "templates/SUBMISSIONS_README.md",
@@ -49,6 +53,8 @@ REQUIRED = [
     ".agents/skills/film-blender-previz/agents/openai.yaml",
     ".agents/skills/film-team-setup/SKILL.md",
     ".agents/skills/film-team-setup/agents/openai.yaml",
+    ".agents/skills/film-director-lab/SKILL.md",
+    ".agents/skills/film-director-lab/agents/openai.yaml",
     ".agents/skills/film-master-reference/SKILL.md",
     ".agents/skills/film-master-reference/agents/openai.yaml",
     ".agents/skills/film-master-reference/references/chekhov.md",
@@ -58,6 +64,7 @@ REQUIRED = [
     "tools/check_model_compatibility.py", "tools/test_model_compatibility.py",
     "tools/check_blender_runtime.py",
     "tapnow/CANVAS_MANIFEST_SPEC.md", "tapnow/NODE_MAP_SPEC.md",
+    "DIRECTOR_LAB.zh-CN.md",
 ]
 
 # The master validates its separated project scaffold.  A generated
@@ -71,6 +78,7 @@ if not (ROOT / "PROJECT.yaml").is_file():
         "project_template/governance/MEMBER_DELIVERY_REPOSITORIES.yaml",
         "project_template/governance/TEAM.yaml",
         "project_template/submissions/README.md",
+        "project_template/02_团队审核/探索讨论/README.md",
     ])
 else:
     REQUIRED.extend([

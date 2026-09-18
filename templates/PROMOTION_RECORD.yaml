@@ -1,0 +1,8 @@
+schema_version: film-os/exploration-promotion/v1
+exploration_id: EX-001
+project_id: DEMO
+promoted_at: "2026-09-15T00:00:00Z"
+canonical_summary: Replace with the exact parts moved into canon.
+status: promoted
+note: >-
+  记录导演纳入了什么、留下了什么，以及对应的正式版本。

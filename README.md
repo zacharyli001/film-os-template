@@ -20,6 +20,7 @@ $film-os-producer 检查项目，告诉我现在适合进入哪个部门
 - 全部 Skills 清单：[`SKILL_CATALOG.zh-CN.md`](SKILL_CATALOG.zh-CN.md)
 - 人本创作原则：[`CREATIVE_CONSTITUTION.zh-CN.md`](CREATIVE_CONSTITUTION.zh-CN.md)
 - 团队协作制度：[`TEAM_COLLABORATION.zh-CN.md`](TEAM_COLLABORATION.zh-CN.md)
+- 导演私密探索与团队讨论：[`DIRECTOR_LAB.zh-CN.md`](DIRECTOR_LAB.zh-CN.md)
 - 跨电脑协作设置：[`CROSS_COMPUTER_SETUP.zh-CN.md`](CROSS_COMPUTER_SETUP.zh-CN.md)
 - 三人独立 Codex 设置：[`THREE_PERSON_CODEX_SETUP.zh-CN.md`](THREE_PERSON_CODEX_SETUP.zh-CN.md)
 - OpenAI / DeepSeek 等多模型适配：[`MODEL_COMPATIBILITY.zh-CN.md`](MODEL_COMPATIBILITY.zh-CN.md)
