@@ -100,11 +100,14 @@ class DirectorLabTest(unittest.TestCase):
     def test_private_to_shared_to_promoted(self) -> None:
         init = self.lab_command("init")
         self.assertIn("initialized", init.stdout)
+        self.assertIn("探索素材的来源", (self.lab / "README.md").read_text(encoding="utf-8"))
         created = self.lab_command("new", "--title", "Hero Kernel")
         self.assertIn("EX-001", created.stdout)
         exploration = self.lab / "探索/EX-001_hero-kernel"
         self.assertTrue((exploration / "EXPLORATION.yaml").is_file())
-        self.assertIn("status: exploring", (exploration / "EXPLORATION.yaml").read_text(encoding="utf-8"))
+        manifest_text = (exploration / "EXPLORATION.yaml").read_text(encoding="utf-8")
+        self.assertIn("status: exploring", manifest_text)
+        self.assertIn("sources: []", manifest_text)
 
         shared = self.lab_command("share", "--id", "EX-001", "--commit-main")
         self.assertIn("shared", shared.stdout)
@@ -138,6 +141,37 @@ class DirectorLabTest(unittest.TestCase):
         exploration_text = (exploration / "EXPLORATION.yaml").read_text(encoding="utf-8")
         self.assertIn("status: \"adopted\"", exploration_text)
         self.assertIn('promotion_status: "promoted"', exploration_text)
+
+    def test_legacy_exploration_without_sources_is_compatible(self) -> None:
+        self.lab_command("init")
+        created = self.lab_command("new", "--title", "Legacy Exploration")
+        self.assertIn("EX-001", created.stdout)
+        exploration = self.lab / "探索/EX-001_legacy-exploration"
+        manifest = exploration / "EXPLORATION.yaml"
+        legacy_text = "\n".join(
+            line for line in manifest.read_text(encoding="utf-8").splitlines() if not line.startswith("sources:")
+        )
+        manifest.write_text(legacy_text + "\n", encoding="utf-8")
+        self.git(self.lab, "add", "-A")
+        self.git(self.lab, "commit", "-qm", "legacy exploration without sources")
+
+        listed = self.lab_command("list")
+        self.assertIn("EX-001", listed.stdout)
+        shared = self.lab_command("share", "--id", "EX-001", "--commit-main")
+        self.assertIn("shared", shared.stdout)
+        parked = self.lab_command("park", "--id", "EX-001", "--note", "legacy")
+        self.assertIn("paused", parked.stdout)
+        promoted = self.lab_command(
+            "mark-promoted",
+            "--id",
+            "EX-001",
+            "--note",
+            "legacy",
+            "--canonical-summary",
+            "legacy promotion",
+            "--commit-main",
+        )
+        self.assertIn("promoted", promoted.stdout)
 
     def test_lab_must_be_outside_project(self) -> None:
         result = self.run_command(

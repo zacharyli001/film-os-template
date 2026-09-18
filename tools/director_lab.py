@@ -107,7 +107,12 @@ def ensure_lab(project: Path, lab: Path, remote: str | None = None) -> None:
     (lab / "README.md").write_text(
         "# 导演探索区\n\n"
         "这是导演私密探索仓库，不属于正式项目正史。\n\n"
-        "默认不分享给成员；只有导演明确要求时，才生成团队讨论版。\n",
+        "默认不分享给成员；只有导演明确要求时，才生成团队讨论版。\n\n"
+        "## 探索素材的来源\n\n"
+        "- 探索可以引用成员提案、成员原话或 AI 推演；每一条都要写明来源：谁先说的（zac／Yoe／Sarah／AI），一行即可。\n"
+        "- 标明来源不构成采纳：不改变成员提案的审核状态（例如“已阅，继续探索”保持不变），也不使任何内容进入主线。\n"
+        "- 成员内容要进主线，只能走“纳入正式”：由导演明确指定，只写入批准的部分、建立新版本、更新版本记录。\n"
+        "- 探索区保持私密，不向成员镜像；生成团队讨论版时同样保留来源标注。\n",
         encoding="utf-8",
     )
     (lab / "探索").mkdir()
@@ -172,6 +177,7 @@ def write_exploration(exploration_dir: Path, project: Path, exploration_id: str,
                 f"updated_at: {yaml_scalar(utc_now())}",
                 "human_intent: >-",
                 "  待导演补充：这次真正想探索什么。",
+                "sources: []",
                 "ai_expansion: []",
                 "open_questions: []",
                 "possible_directions: []",
