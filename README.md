@@ -101,3 +101,27 @@ One person may hold several roles, but every approval still needs a named human 
 ## Mother template upgrades
 
 Develop reusable Film OS features only in this master repository. Production-specific rules stay in that production repository's `project_extensions/`. Use `$film-os-upgrader` from the master to inspect an upgrade; it may apply changes only after a human approves the exact impact list. Project scripts, canon, registries, scenes, approvals, TapNow records, and media are protected.
+
+## License / 许可
+
+Copyright (C) 2026 Zachary Li
+
+SPDX-License-Identifier: AGPL-3.0-only
+
+除文件内另有明确许可声明的内容外，本仓库中由 Zachary Li 原创的 Film OS 框架代码、Skills、工作流、可复用模板及系统文档，采用 **GNU Affero General Public License v3.0 only（AGPL-3.0-only）**。完整条款见 [LICENSE](LICENSE)。
+
+Film OS is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, version 3 of the License only.
+
+Film OS is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+
+### 框架的使用与分发
+
+AGPL-3.0 允许使用、修改和商用。分发受许可覆盖的作品时，须依条款提供对应源码并保留所需声明；修改后的框架通过网络与用户交互时，须依第 13 条向交互用户提供获取对应源码的机会。本说明是摘要，不替代 LICENSE 中的完整条款。
+
+作品仓库中复制的 Film OS 框架代码、Skills、工作流和模板仍受其原许可约束，不因复制到作品项目而失去许可声明。
+
+### 影视作品与独立内容
+
+仅使用 Film OS 不会自动将独立创作的剧本、角色设定、成片、图像、视频、音乐和其他影视素材置于 AGPL 之下。其权利由相应创作者或权利人保留。输出如实际包含或改编了受许可覆盖的框架内容，则按 AGPL 第 2 条及相关条款判断，不将所有输出一概排除。
+
+第三方软件、内容和品牌的权利仍归相应权利人所有；存在单独许可声明时，遵循其原有声明。本许可不授予第三方商标权，也不表示与 OpenAI、Codex、TapNow、MiniMax、Higgsfield 等存在官方隶属或背书关系。
